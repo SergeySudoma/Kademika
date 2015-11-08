@@ -19,20 +19,21 @@ public class ActionField extends JPanel{
 	private int countNonEmptyCells;
 	private int pixelsInCell = 64;
 	private int step = 1;
+	private String coordinates;
+	private int separator;
+
 	
 	void runTheGame() throws Exception {
 		
-//		tank.moveToQuadrant(1, 1);
-//		tank.clean();
-//		tank.moveRandom();
-//		tank.destroy();
-		tank.move(Direction.RIGHT);
-		agressor.move(Direction.DOWN);
+		getPredefiendCoordinates();
+		agressor = new Tank(battleField, this, parseX(coordinates), parseY(coordinates), Direction.RIGHT);
+		tank.turn(Direction.LEFT);
+		tank.fire();
 		
 	}
 	
 	
-	boolean processInterception() {
+	boolean processInterception() throws InterruptedException {
 		String coodinates = getQuadrant(bullet.getX(), bullet.getY());
 		int separator = coodinates.indexOf("_");
 		int checkBulletY = Integer.parseInt(coodinates.substring(0, separator));
@@ -44,11 +45,27 @@ public class ActionField extends JPanel{
 			repaint();
 			countNonEmptyCells--;
 			return true;
-		}
+		}	
+				
 		return false;
 	}
 	
+	private void getPredefiendCoordinates(){		
+		String[] coordinatesList = {"", "64_64", "64_256", "448_448"};	
+		int randomInt = (int)(System.currentTimeMillis() % 3) + 1;			
+		coordinates = coordinatesList[randomInt];
+		separator = coordinates.indexOf("_");
+	}
 	
+	private int parseX(String coordinates){		
+		return Integer.parseInt(coordinates.substring(0, separator));		
+	}
+	
+	
+	private int parseY(String coordinates) {		
+		return Integer.parseInt(coordinates.substring(separator + 1,
+				coordinates.length()));
+	}	
 
 	private String getQuadrant(int x, int y) {
 		int x1 = x / pixelsInCell;
@@ -99,7 +116,6 @@ public class ActionField extends JPanel{
 
 		battleField = new BattleField();
 		tank = new Tank(battleField, this);
-		agressor = new Agressor(battleField, this);
 		bullet = new Bullet(-100, -100, Direction.UP);
 
 		JFrame frame = new JFrame("BATTLE FIELD, DAY 2");
@@ -187,7 +203,7 @@ public class ActionField extends JPanel{
 	public void processMove(Tank tank) throws Exception {
 		
 		Direction direction = tank.getDirection();
-	//	this.tank = tank;		
+		this.tank = tank;		
 		
 		tank.turn(direction);
 
@@ -211,7 +227,7 @@ public class ActionField extends JPanel{
 				System.out.println(tank.getX() + ":" + tank.getY() + " " + "tank moved LEFT");
 			}
 
-			else {
+			else if (tank.getX() < battleField.getBfWidth() - pixelsInCell && direction == Direction.RIGHT ){
 				tank.updateX(step);
 				System.out.println(tank.getX() + ":" + tank.getY() + " " + "tank moved RIGHT");
 			}
@@ -231,18 +247,22 @@ public class ActionField extends JPanel{
 
 			if (tank.getDirection() == Direction.UP) {
 				bullet.updateY(-step);
+				System.out.println(bullet.getX() + " " + bullet.getY());
 			}
 
 			else if (tank.getDirection() == Direction.DOWN) {
 				bullet.updateY(+step);
+				System.out.println(bullet.getX() + " " + bullet.getY());
 			}
 
 			else if (tank.getDirection() == Direction.LEFT) {
 				bullet.updateX(-step);
+				System.out.println(bullet.getX() + " " + bullet.getY());
 			}
 
 			else if (tank.getDirection() == Direction.RIGHT) {
 				bullet.updateX(+step);
+				System.out.println(bullet.getX() + " " + bullet.getY());
 			}
 			repaint();
 			Thread.sleep(bullet.getSpeed());
