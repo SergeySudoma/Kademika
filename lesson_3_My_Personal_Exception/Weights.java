@@ -32,6 +32,6 @@ public class Weights {
 	}
 
 	private static int getCurrentWeight() {
-		return 210;
+		return 210; //just an example
 	}
 }
