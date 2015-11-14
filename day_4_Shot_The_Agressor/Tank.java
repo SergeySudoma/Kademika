@@ -154,6 +154,7 @@ public class Tank extends JPanel{
 		updateY(-1000);
 		
 	}
+
 	
 	
 	
