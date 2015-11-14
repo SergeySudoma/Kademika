@@ -5,6 +5,7 @@ public class Bullet {
 	private  int x;
 	private  int y;
 	Direction direction;
+	private int distance;
 
 	private int speed = 1;
 
@@ -39,6 +40,20 @@ public class Bullet {
 	public int getSpeed(){
 		return speed;
 	}
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public int getDistance() {
+		return distance;
+	}
+
+	public void updateDistance() {
+		this.distance += 1;
+	}
+	
+	
 	
 
 }

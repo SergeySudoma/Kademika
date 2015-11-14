@@ -17,19 +17,21 @@ public class ActionField extends JPanel{
 	private Tiger agressor;
 	private Bullet bullet;
 	private int countNonEmptyCells;
-	private int pixelsInCell = 64;
-	private int step = 1;
+	public static final int PIXELS_IN_CELL = 64;
+	public static final int STEP = 1;
 	private String coordinates;
 	private int separator;
+	public static final int MIN_DISTANCE = 40;
 
 	
 	void runTheGame() throws Exception {
 		
 		getPredefiendCoordinates();
 		agressor = new Tiger(battleField, this, parseX(coordinates), parseY(coordinates), Direction.RIGHT);
+		agressor.turn(Direction.RIGHT);
 		tank.turn(Direction.LEFT);
 		tank.fire();
-		tank.fire();
+		agressor.fire();
 	}
 	
 	
@@ -47,7 +49,8 @@ public class ActionField extends JPanel{
 			return true;
 		}
 		
-		if (getQuadrant(bullet.getX(), bullet.getY()).equals(getQuadrant(agressor.getX(), agressor.getY())))
+		if (getQuadrant(bullet.getX(), bullet.getY()).equals(getQuadrant(agressor.getX(), agressor.getY())) &&
+				bullet.getDistance() > MIN_DISTANCE)
 		{
 			agressor.delArmor();
 			bullet.destroy();
@@ -55,6 +58,13 @@ public class ActionField extends JPanel{
 			if(agressor.getArmor() == 0){
 				destroy();
 			}
+		}
+		
+		if (getQuadrant(bullet.getX(), bullet.getY()).equals(getQuadrant(tank.getX(), tank.getY())) &&
+				bullet.getDistance() > MIN_DISTANCE)
+		{
+			tank.destroy();
+			bullet.destroy();
 		}
 				
 		return false;
@@ -89,15 +99,15 @@ public class ActionField extends JPanel{
 	}
 
 	private String getQuadrant(int x, int y) {
-		int x1 = x / pixelsInCell;
-		int y1 = y / pixelsInCell;
+		int x1 = x / PIXELS_IN_CELL;
+		int y1 = y / PIXELS_IN_CELL;
 		String result = (x1 + "_" + y1);
 		return result;
 	}
 
 	private String getQuadrantXY(int coordinateY, int coordinateX) {
-		String result = (coordinateY - step) * pixelsInCell + "_"
-				+ (coordinateX - step) * pixelsInCell;
+		String result = (coordinateY - STEP) * PIXELS_IN_CELL + "_"
+				+ (coordinateX - STEP) * PIXELS_IN_CELL;
 		return result;
 	}
 	
@@ -224,32 +234,31 @@ public class ActionField extends JPanel{
 	public void processMove(Tank tank) throws Exception {
 		
 		Direction direction = tank.getDirection();
-		this.tank = tank;		
-		
+	
 		tank.turn(direction);
 
-		for (int i = 0; i < pixelsInCell; i++) {
+		for (int i = 0; i < PIXELS_IN_CELL; i++) {
 			Thread.sleep(tank.getSpeed());
 			repaint();
 			
 			if (tank.getY() > 0 && direction == Direction.UP) {
-				tank.updateY(-step);
+				tank.updateY(-STEP);
 				System.out.println(tank.getX() + ":" + tank.getY() + " " + "tank moved UP");
 
 			}
 
-			else if (tank.getY() < battleField.getBfHeight() - pixelsInCell && direction == Direction.DOWN) {
-				tank.updateY(+step);
+			else if (tank.getY() < battleField.getBfHeight() - PIXELS_IN_CELL && direction == Direction.DOWN) {
+				tank.updateY(+STEP);
 				System.out.println(tank.getX() + ":" + tank.getY() + " " + "tank moved DOWN");
 			}
 
 			else if (tank.getX() > 0 && direction == Direction.LEFT) {
-				tank.updateX(-step);
+				tank.updateX(-STEP);
 				System.out.println(tank.getX() + ":" + tank.getY() + " " + "tank moved LEFT");
 			}
 
-			else if (tank.getX() < battleField.getBfWidth() - pixelsInCell && direction == Direction.RIGHT ){
-				tank.updateX(step);
+			else if (tank.getX() < battleField.getBfWidth() - PIXELS_IN_CELL && direction == Direction.RIGHT ){
+				tank.updateX(STEP);
 				System.out.println(tank.getX() + ":" + tank.getY() + " " + "tank moved RIGHT");
 			}
 		}
@@ -266,24 +275,28 @@ public class ActionField extends JPanel{
 		while (bullet.getX() > 0 && bullet.getX() <= 576 - 25
 				&& bullet.getY() > 0 && bullet.getY() <= 576 - 25) {
 
-			if (tank.getDirection() == Direction.UP) {
-				bullet.updateY(-step);
+			if (bullet.getDirection() == Direction.UP) {
+				bullet.updateY(-STEP);
 				System.out.println(bullet.getX() + " " + bullet.getY());
+				bullet.updateDistance();
 			}
 
-			else if (tank.getDirection() == Direction.DOWN) {
-				bullet.updateY(+step);
+			else if (bullet.getDirection() == Direction.DOWN) {
+				bullet.updateY(+STEP);
 				System.out.println(bullet.getX() + " " + bullet.getY());
+				bullet.updateDistance();
 			}
 
-			else if (tank.getDirection() == Direction.LEFT) {
-				bullet.updateX(-step);
+			else if (bullet.getDirection() == Direction.LEFT) {
+				bullet.updateX(-STEP);
 				System.out.println(bullet.getX() + " " + bullet.getY());
+				bullet.updateDistance();
 			}
 
-			else if (tank.getDirection() == Direction.RIGHT) {
-				bullet.updateX(+step);
+			else if (bullet.getDirection() == Direction.RIGHT) {
+				bullet.updateX(+STEP);
 				System.out.println(bullet.getX() + " " + bullet.getY());
+				bullet.updateDistance();
 			}
 			repaint();
 			Thread.sleep(bullet.getSpeed());
