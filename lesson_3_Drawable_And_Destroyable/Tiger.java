@@ -29,7 +29,7 @@ public class Tiger extends AbstractTank{
 	public void draw(Graphics g) {
 		
 		g.setColor(new Color(0, 255, 0));
-		g.fillRect(this.getX(), this.getY(), 64, 64);
+		g.fillOval(this.getX(), this.getY(), 64, 64);
 		g.setColor(new Color(255, 0, 0));
 		if (this.getDirection() == Direction.UP) {
 			g.fillRect(this.getX() + 20, this.getY(), 24, 34);
