@@ -13,7 +13,7 @@ public class ActionField extends JPanel{
 	private boolean COLORDED_MODE = false;
 
 	private BattleField battleField;
-	private AbstractTank tank;
+	private BT7 tank;
 	private Tiger agressor;
 	private Bullet bullet;
 	private int countNonEmptyCells;
@@ -27,14 +27,7 @@ public class ActionField extends JPanel{
 		
 		getPredefiendCoordinates();
 		agressor = new Tiger(battleField, this, 128, 256, Direction.RIGHT);
-		//tank = new BT7(battleField, this, 256, 256, Direction.LEFT);
-		//tank.fire();
-		agressor.fire();
-		//agressor.move(Direction.DOWN);
-		//tank.move(Direction.UP);
-		//tank.turn(Direction.LEFT);
-		//tank.fire();
-		//tank.fire();
+		tank = new BT7(battleField, this, 256, 256, Direction.LEFT);
 	}
 	
 	
