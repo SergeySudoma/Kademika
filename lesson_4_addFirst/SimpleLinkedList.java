@@ -19,7 +19,7 @@ public class SimpleLinkedList {
 		Node nodeFirst = new Node();		
 		nodeFirst.obj = obj;
 		nodeFirst.ref = root;
-		root = nodeFirst.ref;
+		root = nodeFirst;
 		size++;
 	}
 	
