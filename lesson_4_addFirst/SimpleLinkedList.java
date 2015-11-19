@@ -20,6 +20,7 @@ public class SimpleLinkedList {
 		nodeFirst.obj = obj;
 		nodeFirst.ref = root;
 		root = nodeFirst.ref;
+		size++;
 	}
 	
 	public void addLast(Object obj){
