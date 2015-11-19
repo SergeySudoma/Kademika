@@ -6,7 +6,7 @@ public class SimpleLinkedList {
 	int size;
 	
 	public SimpleLinkedList(){
-		
+		size = 0;
 	}
 	
 	
@@ -22,7 +22,7 @@ public class SimpleLinkedList {
 		
 	}
 	
-	public void addAfter(Object obj){
+	public void addAfter(Object obj, Object previous){
 		
 	}
 }
