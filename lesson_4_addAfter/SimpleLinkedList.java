@@ -52,23 +52,16 @@ public class SimpleLinkedList {
 			while (current.obj != previous) {
 				current = current.ref;
 			}
-			
+
 		} catch (Exception e) {
 			throw new IllegalStateException();
 		}
 
-		if (current.ref == null && current.obj != previous) {
-			throw new IllegalStateException();
-		}
-		if (current.ref == null) {
-			addLast(obj);
-		} else {
-			Node node = new Node();
-			node.obj = obj;
-			node.ref = current.ref;
-			current.ref = node;
-			size++;
-		}
+		Node node = new Node();
+		node.obj = obj;
+		node.ref = current.ref;
+		current.ref = node;
+		size++;
 	}
 
 	private class Node {
@@ -80,7 +73,6 @@ public class SimpleLinkedList {
 		}
 	}
 
-	
 	public void printList() {
 		Node current = root;
 		for (int i = 0; i < this.size; i++) {
