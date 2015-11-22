@@ -97,16 +97,16 @@ public class SimpleLinkedList implements Iterable<Object> {
 
 		@Override
 		public Object next() {
-			if (root == null) {
+			if (node == null && root != null) {
 				node = root;
 				return node.obj;
 			}
-			if (root != null && node.ref != null) {
+			if (hasNext()) {
 				node.obj = node.ref;
 				return node.obj;
 			}
 			else{
-			throw new IllegalStateException("list's empty");
+			throw new IllegalStateException("no more elems");
 			}
 		}
 	}
