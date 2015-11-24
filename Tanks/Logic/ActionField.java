@@ -37,7 +37,7 @@ public class ActionField extends JPanel{
 		bullet = new Bullet(-100, -100, Direction.UP);
 		
 		agressor.turn(Direction.UP);
-		defender.turn(Direction.LEFT);
+		defender.turn(Direction.RIGHT);
 		agressor.fire();
 		defender.fire();
 
@@ -147,7 +147,11 @@ public class ActionField extends JPanel{
 	public ActionField() throws Exception {
 
 		battleField = new BattleField();
-
+//		getPredefiendCoordinates();
+//		agressor = new Tiger(battleField, this, parseX(coordinates), parseY(coordinates), Direction.RIGHT);
+//		defender = new T34(battleField, this);
+		
+		
 		JFrame frame = new JFrame("TANKS GAME");
 		frame.setLocation(750, 150);
 		frame.setMinimumSize(new Dimension(battleField.getBfWidth() + 15, battleField.getBfHeight() + 35));
@@ -161,7 +165,9 @@ public class ActionField extends JPanel{
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		battleField.draw(g);
+		if(defender != null){
 		defender.draw(g);
+		}
 		agressor.draw(g);
 		bullet.draw(g);
 	}

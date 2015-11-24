@@ -1,6 +1,10 @@
 package Objects;
 
+import java.awt.Graphics;
+import java.awt.Image;
+
 import javax.swing.JPanel;
+
 import Logic.ActionField;
 import Logic.BattleField;
 import Logic.Direction;
@@ -8,6 +12,11 @@ import Logic.Drawable;
 
 public abstract class AbstractTank extends JPanel implements Drawable{
 
+	protected Image image_up;
+	protected Image image_down;
+	protected Image image_left;
+	protected Image image_right;
+	
 	private int x;
 	private int y;
 	
@@ -35,6 +44,19 @@ public abstract class AbstractTank extends JPanel implements Drawable{
 		this.y = y;
 		this.direction = direction;
 
+	}
+	
+	public void draw(Graphics g) {
+
+		if (this.getDirection() == Direction.UP) {
+			g.drawImage(image_up, getX(), getY(), null);
+		} else if (this.getDirection() == Direction.DOWN) {
+			g.drawImage(image_down, getX(), getY(), null);
+		} else if (this.getDirection() == Direction.LEFT) {
+			g.drawImage(image_left, getX(), getY(), null);
+		} else {
+			g.drawImage(image_right, getX(), getY(), null);
+		}
 	}
 	
 	public int getSpeed() {

@@ -20,7 +20,7 @@ public class Bullet implements Drawable, Destroyable{
 	protected Image image_left;
 	protected Image image_right;
 
-	private int speed = 5;
+	private int speed = 7;
 
 	public Bullet(int x, int y, Direction direction) {
 		this.x = x;

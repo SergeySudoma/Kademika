@@ -12,10 +12,6 @@ import Logic.Direction;
 public class Tiger extends AbstractTank{
 	
 	private int armor = 2;
-	protected Image image_up;
-	protected Image image_down;
-	protected Image image_left;
-	protected Image image_right;
 
 	public Tiger(BattleField bf, ActionField af, int x, int y,
 			Direction direction) {
@@ -41,18 +37,5 @@ public class Tiger extends AbstractTank{
 	
 	public int delArmor(){
 		return armor = armor - 1;
-	}
-
-	
-	public void draw(Graphics g) {
-		if (this.getDirection() == Direction.UP) {
-			g.drawImage(image_up, getX(), getY(), null);
-		} else if (this.getDirection() == Direction.DOWN) {
-			g.drawImage(image_down, getX(), getY(), null);
-		} else if (this.getDirection() == Direction.LEFT) {
-			g.drawImage(image_left, getX(), getY(), null);
-		} else {
-			g.drawImage(image_right, getX(), getY(), null);
-		}
 	}	
 }

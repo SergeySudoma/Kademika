@@ -2,20 +2,14 @@ package Objects;
 
 import java.awt.*;
 import java.io.IOException;
-
+import java.awt.Graphics;
 import javax.imageio.ImageIO;
-
 import Logic.ActionField;
 import Logic.BattleField;
 import Logic.Direction;
 
 public class T34 extends AbstractTank{
 
-	protected Image image_up;
-	protected Image image_down;
-	protected Image image_left;
-	protected Image image_right;
-	
 	public T34(BattleField bf, ActionField af, int x, int y, Direction direction) {
 		super(bf, af, x, y, direction);
 		initImages();
@@ -36,19 +30,5 @@ public class T34 extends AbstractTank{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
-	}
-
-
-	public void draw(Graphics g) {
-
-		if (this.getDirection() == Direction.UP) {
-			g.drawImage(image_up, getX(), getY(), null);
-		} else if (this.getDirection() == Direction.DOWN) {
-			g.drawImage(image_down, getX(), getY(), null);
-		} else if (this.getDirection() == Direction.LEFT) {
-			g.drawImage(image_left, getX(), getY(), null);
-		} else {
-			g.drawImage(image_right, getX(), getY(), null);
-		}		
-	}
+	}	
 }
