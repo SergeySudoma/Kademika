@@ -28,11 +28,5 @@ public class Eagle extends AbstractObjectOfField {
 		g.drawImage(image, getX(), getY(), null);
 	}
 
-
-	@Override
-	public void destroy() {
-		setX(-1000);
-		setY(-1000);
-	}
 }
 

@@ -8,8 +8,6 @@ import Logic.Direction;
 
 public class T34 extends AbstractTank {
 	
-	int index = 0;	
-
 	public T34(BattleField bf,int x, int y, Direction direction) {
 		super(bf, x, y, direction);
 		initImages();

@@ -12,9 +12,9 @@ public abstract class AbstractTank extends AbstractObjectOfField implements
 
 	private int speed = 10;
 	private BattleField bf;
+	int index = 0;
 	private Direction direction;
 	private String mySimpleName = this.getClass().getSimpleName();
-	private boolean isDestroyed = false;
 
 	public AbstractTank(BattleField bf) {
 
@@ -109,21 +109,7 @@ public abstract class AbstractTank extends AbstractObjectOfField implements
 	 return bullet;
 	 }
 
-	public void destroy() {
-		updateX(-1000);
-		updateY(-1000);
-		setDestroyed(true);
-	}
-
 	public String getMySimpleName() {
 		return mySimpleName;
-	}
-
-	public boolean getIsDestroyed() {
-		return isDestroyed;
-	}
-
-	public void setDestroyed(boolean isDestroyed) {
-		this.isDestroyed = isDestroyed;
 	}
 }

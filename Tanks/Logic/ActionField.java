@@ -8,8 +8,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import Objects.BT7;
 import Objects.Blank;
 import Objects.Bullet;
+import Objects.Eagle;
 import Objects.T34;
 import Objects.Tiger;
 import Logic.Direction;
@@ -22,7 +24,9 @@ public class ActionField extends JPanel {
 	private BattleField battleField;
 	private T34 defender;
 	private Tiger agressor;
+	private BT7 killer;
 	private Bullet bullet;
+	private Eagle eagle;
 	private String coordinates;
 	private int separator;
 
@@ -30,12 +34,10 @@ public class ActionField extends JPanel {
 
 		battleField = new BattleField();
 		getPredefiendCoordinates();
-		// agressor = new Tiger(battleField, this, parseX(coordinates),
-		// parseY(coordinates), Direction.RIGHT);
-		// defender = new T34(battleField, this);
-
-		agressor = new Tiger(battleField, 64, 256, Direction.RIGHT);
+		agressor = new Tiger(battleField, parseX(coordinates),
+				parseY(coordinates), Direction.RIGHT);
 		defender = new T34(battleField);
+		killer = new BT7(battleField, 320, 320, Direction.RIGHT);
 
 		JFrame frame = new JFrame("TANKS GAME");
 		frame.setLocation(750, 150);
@@ -50,38 +52,67 @@ public class ActionField extends JPanel {
 
 	void runTheGame() throws Exception {
 
-		while (true) {
-			 if(!defender.getIsDestroyed()){
-			processAction(defender.setUp(), defender);
-			 }
+		// while (true) {
+		// if(!defender.getIsDestroyed()){
+		// processAction(defender.setUp(), defender);
+		// }
+		destroyTheEagle();
+		// }
+	}
+
+	public void destroyTheEagle() throws Exception {
+
+		int eagleX = battleField.getEagleX() / battleField.PIXELS_IN_CELL;
+		int eagleY = battleField.getEagleX() / battleField.PIXELS_IN_CELL;
+
+		int killerX = killer.getX() / battleField.PIXELS_IN_CELL;
+		int killerY = killer.getY() / battleField.PIXELS_IN_CELL;
+		int xDif = eagleX - killerX;
+		int yDif = eagleY - killerY;
+
+		for (int i = 0; i <= Math.abs(xDif); i++) {
+			if (xDif > 0) {
+				processAction(Actions.MOVE_RIGHT, killer);
+			} else if (xDif < 0) {
+				processAction(Actions.MOVE_LEFT, killer);
+			}
+		}
+			if (yDif > 0) {
+				processAction(Actions.TURN_UP, killer);
+			} else if (yDif < 0) {
+				processAction(Actions.TURN_DOWN, killer);
+			}
+			
+		while (battleField.getEagle().getIsDestroyed() == false) {
+			processAction(Actions.FIRE, killer);
 		}
 	}
 
 	private boolean isAvailableForMove(Tank tank) {
 		if (tank.getDirection() == Direction.UP) {
-			if (battleField.checkQuadrant(tank.getX() / PIXELS_IN_CELL, (tank.getY()
-					- PIXELS_IN_CELL) / PIXELS_IN_CELL) instanceof Blank) {
+			if (battleField.checkQuadrant(tank.getX() / PIXELS_IN_CELL,
+					(tank.getY() - PIXELS_IN_CELL) / PIXELS_IN_CELL) instanceof Blank) {
 				return true;
 			}
 		}
 
 		else if (tank.getDirection() == Direction.DOWN) {
-			if (battleField.checkQuadrant(tank.getX() / PIXELS_IN_CELL, (tank.getY()
-					+ PIXELS_IN_CELL) / PIXELS_IN_CELL) instanceof Blank) {
+			if (battleField.checkQuadrant(tank.getX() / PIXELS_IN_CELL,
+					(tank.getY() + PIXELS_IN_CELL) / PIXELS_IN_CELL) instanceof Blank) {
 				return true;
 			}
 		}
 
 		else if (tank.getDirection() == Direction.LEFT) {
-			if (battleField.checkQuadrant((tank.getX() - PIXELS_IN_CELL) / PIXELS_IN_CELL,
-					tank.getY() / PIXELS_IN_CELL) instanceof Blank) {
+			if (battleField.checkQuadrant((tank.getX() - PIXELS_IN_CELL)
+					/ PIXELS_IN_CELL, tank.getY() / PIXELS_IN_CELL) instanceof Blank) {
 				return true;
 			}
 		}
 
 		else {
-			if (battleField.checkQuadrant((tank.getX() + PIXELS_IN_CELL) / PIXELS_IN_CELL,
-					tank.getY() / PIXELS_IN_CELL) instanceof Blank) {
+			if (battleField.checkQuadrant((tank.getX() + PIXELS_IN_CELL)
+					/ PIXELS_IN_CELL, tank.getY() / PIXELS_IN_CELL) instanceof Blank) {
 				return true;
 			}
 		}
@@ -112,6 +143,23 @@ public class ActionField extends JPanel {
 		else if (action == Actions.FIRE) {
 			processFire(tank.fire());
 		}
+
+		else if (action == Actions.TURN_UP) {
+			tank.setDirection(Direction.UP);
+		}
+
+		else if (action == Actions.TURN_DOWN) {
+			tank.setDirection(Direction.DOWN);
+		}
+
+		else if (action == Actions.TURN_LEFT) {
+			tank.setDirection(Direction.LEFT);
+		}
+
+		else if (action == Actions.TURN_RIGHT) {
+			tank.setDirection(Direction.RIGHT);
+		}
+		repaint();
 	}
 
 	private void processMove(Tank tank) throws InterruptedException {
@@ -235,6 +283,10 @@ public class ActionField extends JPanel {
 
 		if (bullet != null) {
 			bullet.draw(g);
+		}
+
+		if (killer != null) {
+			killer.draw(g);
 		}
 	}
 

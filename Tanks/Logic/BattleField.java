@@ -17,6 +17,9 @@ public class BattleField implements Drawable{
 	
 	private int bfWidth = 576;
 	private int bfHeight = 576;
+	private int eagleX;
+	private int eagleY;
+	private Eagle eagle;
 	public static final int PIXELS_IN_CELL = 64;
 	private boolean COLORDED_MODE = false;
 	private ArrayList<AbstractObjectOfField> list = new ArrayList<AbstractObjectOfField>();	
@@ -118,10 +121,13 @@ public class BattleField implements Drawable{
 					list.add(new Rock(j * ActionField.PIXELS_IN_CELL, k * ActionField.PIXELS_IN_CELL));		
 				}
 				else if (this.scanQuadrant(j, k).equals("E")) {
-					list.add(new Eagle(j * ActionField.PIXELS_IN_CELL, k * ActionField.PIXELS_IN_CELL));		
+					list.add(setEagle(new Eagle(j * ActionField.PIXELS_IN_CELL, k * ActionField.PIXELS_IN_CELL)));
+					setEagleX(j);
+					setEagleY(k);
 				}
 				else if (this.scanQuadrant(j, k).equals("W")) {
-					list.add(new Water(j * ActionField.PIXELS_IN_CELL, k * ActionField.PIXELS_IN_CELL));		
+					list.add(new Water(j * ActionField.PIXELS_IN_CELL, k * ActionField.PIXELS_IN_CELL));
+					
 				}
 				
 				else {
@@ -159,6 +165,31 @@ public void createBackground(Graphics g){
 		for(AbstractObjectOfField item : list){
 			item.draw(g);
 		}
+	}
+
+	public int getEagleX() {
+		return eagleX;
+	}
+
+	public void setEagleX(int eagleX) {
+		this.eagleX = eagleX;
+	}
+
+	public int getEagleY() {
+		return eagleY;
+	}
+
+	public void setEagleY(int eagleY) {
+		this.eagleY = eagleY;
+	}
+
+	public Eagle getEagle() {
+		return eagle;
+	}
+
+	public Eagle setEagle(Eagle eagle) {
+		this.eagle = eagle;
+		return eagle;
 	}
 	
 }

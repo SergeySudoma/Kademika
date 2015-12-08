@@ -20,6 +20,5 @@ public interface Tank {
 	public void moveRight() throws InterruptedException;
 	public Bullet fire() throws Exception;
 	public String getMySimpleName();
-	public boolean getIsDestroyed();
-	public void setDestroyed(boolean isDestroyed);
+
 }

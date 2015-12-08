@@ -1,6 +1,7 @@
 package Objects;
 
 import java.awt.Image;
+import java.io.ObjectInputStream.GetField;
 
 import javax.security.auth.Destroyable;
 
@@ -15,10 +16,13 @@ public abstract class AbstractObjectOfField implements Drawable, Destroyable{
 	protected Image image_down;
 	protected Image image_left;
 	protected Image image_right;
-	
+	protected boolean isDestroyed = false;
+		
 	public AbstractObjectOfField(){
 		
 	}
+	
+
 	
 	public AbstractObjectOfField(int x, int y){
 		this.x = x;
@@ -42,9 +46,18 @@ public abstract class AbstractObjectOfField implements Drawable, Destroyable{
 		this.y = y;
 	}
 	
+	public boolean getIsDestroyed() {
+		return isDestroyed;
+	}
+
+	public void setDestroyed() {
+		isDestroyed = true;
+	}
+	
 	public void destroy(){
 		setX (-1000);
 		setY (-1000);
+		setDestroyed();
 	}
 }
 

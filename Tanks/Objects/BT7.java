@@ -1,20 +1,45 @@
 package Objects;
 
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
+
+import Logic.Actions;
 import Logic.BattleField;
 import Logic.Direction;
 
-public class Tiger extends AbstractTank{
+public class BT7 extends AbstractTank{
 	
 	private int armor = 2;
 
-	public Tiger(BattleField bf, int x, int y,
+	public BT7(BattleField bf, int x, int y,
 			Direction direction) {
 		super(bf, x, y, direction);
 		initImage();
 		
 	}
+	
+
+	private Actions[] actions = {
+			Actions.MOVE_UP,
+			Actions.MOVE_UP,
+			Actions.MOVE_UP,
+			Actions.MOVE_UP,
+			Actions.MOVE_UP,
+			Actions.MOVE_UP,
+//			Actions.FIRE,
+//			Actions.FIRE,
+//			Actions.FIRE,
+//			Actions.FIRE,
+//			Actions.FIRE
+		};
+		
+		public Actions setUp(){
+			if(index >= actions.length){
+				index = 0;
+			}
+			return actions[index++];
+		}
 	
 	private void initImage() {		
 		try {
@@ -33,5 +58,5 @@ public class Tiger extends AbstractTank{
 	
 	public int delArmor(){
 		return armor = armor - 1;
-	}
+	}	
 }

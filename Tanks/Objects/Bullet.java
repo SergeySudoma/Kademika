@@ -90,4 +90,6 @@ public class Bullet implements Drawable, Destroyable{
 	public void setShooter(String shooter) {
 		this.shooter = shooter;
 	}
+
+
 }
