@@ -1,11 +1,7 @@
 package Objects;
 
-import java.awt.*;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
-import Logic.ActionField;
 import Logic.BattleField;
 import Logic.Direction;
 
@@ -13,9 +9,9 @@ public class Tiger extends AbstractTank{
 	
 	private int armor = 2;
 
-	public Tiger(BattleField bf, ActionField af, int x, int y,
+	public Tiger(BattleField bf, int x, int y,
 			Direction direction) {
-		super(bf, af, x, y, direction);
+		super(bf, x, y, direction);
 		initImage();
 		
 	}

@@ -1,22 +1,22 @@
 package Objects;
 
-import java.awt.*;
 import java.io.IOException;
-import java.awt.Graphics;
 import javax.imageio.ImageIO;
-import Logic.ActionField;
+import Logic.Actions;
 import Logic.BattleField;
 import Logic.Direction;
 
-public class T34 extends AbstractTank{
+public class T34 extends AbstractTank {
+	
+	int index = 0;	
 
-	public T34(BattleField bf, ActionField af, int x, int y, Direction direction) {
-		super(bf, af, x, y, direction);
+	public T34(BattleField bf,int x, int y, Direction direction) {
+		super(bf, x, y, direction);
 		initImages();
 	}
 	
-	public T34(BattleField bf, ActionField af) {
-		super(bf, af);
+	public T34(BattleField bf) {
+		super(bf);
 		initImages();		
 	}
 	
@@ -30,5 +30,26 @@ public class T34 extends AbstractTank{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
+	}
+	
+	private Actions[] actions = {
+		Actions.MOVE_UP,
+		Actions.MOVE_UP,
+		Actions.MOVE_UP,
+		Actions.MOVE_UP,
+		Actions.MOVE_UP,
+		Actions.MOVE_UP,
+//		Actions.FIRE,
+//		Actions.FIRE,
+//		Actions.FIRE,
+//		Actions.FIRE,
+//		Actions.FIRE
+	};
+	
+	public Actions setUp(){
+		if(index >= actions.length){
+			index = 0;
+		}
+		return actions[index++];
 	}	
 }

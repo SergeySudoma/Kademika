@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.security.auth.DestroyFailedException;
 
 import Objects.AbstractObjectOfField;
+import Objects.Blank;
 import Objects.Brick;
 import Objects.Eagle;
 import Objects.Rock;
@@ -16,6 +17,7 @@ public class BattleField implements Drawable{
 	
 	private int bfWidth = 576;
 	private int bfHeight = 576;
+	public static final int PIXELS_IN_CELL = 64;
 	private boolean COLORDED_MODE = false;
 	private ArrayList<AbstractObjectOfField> list = new ArrayList<AbstractObjectOfField>();	
 	
@@ -43,6 +45,10 @@ public class BattleField implements Drawable{
 		return battleField;
 	}
 	
+	public ArrayList<AbstractObjectOfField> getList(){
+		return list;
+	}
+	
 	public String scanQuadrant(int x, int y){		
 		return battleField[x][y];		
 	}
@@ -68,14 +74,22 @@ public class BattleField implements Drawable{
 	}
 	
 	
-	public void updateObjects(int y, int x) {
+	public AbstractObjectOfField checkQuadrant(int x, int y){
+		AbstractObjectOfField result = null;
 		for(AbstractObjectOfField obj : list){
-			if(obj.getX() == x * 64 && obj.getY() == y * 64){
-				try {
+			if(obj.getX() == x * PIXELS_IN_CELL && obj.getY() == y * PIXELS_IN_CELL){
+				result = obj;
+			}
+		}
+			return result;
+	}
+	
+	
+	public void updateObjects(int y, int x) throws DestroyFailedException {
+		for(AbstractObjectOfField obj : list){
+			if(!(obj instanceof Blank)){
+			if(obj.getX() == x * PIXELS_IN_CELL && obj.getY() == y * PIXELS_IN_CELL){
 					obj.destroy();
-				} catch (DestroyFailedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
 		}
@@ -84,8 +98,10 @@ public class BattleField implements Drawable{
 	public boolean checkInterception(int y, int x){
 		boolean result = false;		
 		for(AbstractObjectOfField obj : list){
-			if(obj.getX() == x * 64 && obj.getY() == y * 64){
-				result = true;
+			if(!(obj instanceof Blank)){
+				if(obj.getX() == x * PIXELS_IN_CELL && obj.getY() == y * PIXELS_IN_CELL){
+					result = true;
+				}
 			}
 		}		
 		return result;
@@ -98,20 +114,25 @@ public class BattleField implements Drawable{
 				if (this.scanQuadrant(j, k).equals("B")) {
 					list.add(new Brick(j * ActionField.PIXELS_IN_CELL, k * ActionField.PIXELS_IN_CELL));		
 				}
-				if (this.scanQuadrant(j, k).equals("R")) {
+				else if (this.scanQuadrant(j, k).equals("R")) {
 					list.add(new Rock(j * ActionField.PIXELS_IN_CELL, k * ActionField.PIXELS_IN_CELL));		
 				}
-				if (this.scanQuadrant(j, k).equals("E")) {
+				else if (this.scanQuadrant(j, k).equals("E")) {
 					list.add(new Eagle(j * ActionField.PIXELS_IN_CELL, k * ActionField.PIXELS_IN_CELL));		
 				}
-				if (this.scanQuadrant(j, k).equals("W")) {
+				else if (this.scanQuadrant(j, k).equals("W")) {
 					list.add(new Water(j * ActionField.PIXELS_IN_CELL, k * ActionField.PIXELS_IN_CELL));		
 				}
+				
+				else {
+					list.add(new Blank(j * ActionField.PIXELS_IN_CELL, k * ActionField.PIXELS_IN_CELL));
+				}
+				
 			}
 		}
 	}
 	
-	public void createBackground(Graphics g){
+public void createBackground(Graphics g){
 		int i = 0;
 		Color cc;
 		for (int v = 0; v < 9; v++) {
@@ -140,10 +161,5 @@ public class BattleField implements Drawable{
 		}
 	}
 	
-//	private String getQuadrantXY(int coordinateY, int coordinateX) {
-//		String result = (coordinateY - ActionField.STEP) * ActionField.PIXELS_IN_CELL + "_"
-//				+ (coordinateX - ActionField.STEP) * ActionField.PIXELS_IN_CELL;
-//		return result;
-//	}
 }
 

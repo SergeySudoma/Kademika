@@ -14,7 +14,7 @@ public class Bullet implements Drawable, Destroyable{
 	private  int x;
 	private  int y;
 	Direction direction;
-	private int distance;
+	private String shooter;
 	protected Image image_up;
 	protected Image image_down;
 	protected Image image_left;
@@ -40,6 +40,7 @@ public class Bullet implements Drawable, Destroyable{
 	public void destroy() {
 		x = -1000;
 		y = -1000;
+		setShooter(null);
 	}
 	
 	public int getX(){
@@ -58,14 +59,6 @@ public class Bullet implements Drawable, Destroyable{
 		return direction;
 	}
 
-	public int getDistance() {
-		return distance;
-	}
-
-	public void updateDistance() {
-		this.distance += 1;
-	}
-	
 	private void initImage(){		
 		try {
 
@@ -88,5 +81,13 @@ public class Bullet implements Drawable, Destroyable{
 		} else {
 			g.drawImage(image_right, getX(), getY(), null);
 		}
+	}
+
+	public String getShooter() {
+		return shooter;
+	}
+
+	public void setShooter(String shooter) {
+		this.shooter = shooter;
 	}
 }

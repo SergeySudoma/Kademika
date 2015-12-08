@@ -1,32 +1,8 @@
 package Logic;
 
 public enum Direction {
-	UP, DOWN, LEFT, RIGHT;
+	UP, DOWN, LEFT, RIGHT, DEFAULT;
 
-
-	public static Direction getDirectionbyNum(int directionNum) {
-
-		Direction direction = null;
-
-		if (directionNum == 1) {
-			direction = Direction.UP;
-		}
-
-		else if (directionNum == 2) {
-			direction = Direction.DOWN;
-		}
-
-		else if (directionNum == 3) {
-			direction = Direction.LEFT;
-		}
-
-		else {
-			direction = Direction.RIGHT;
-		}
-
-		return direction;
-
-	}
 	}
 
 

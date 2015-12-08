@@ -8,8 +8,8 @@ import Logic.Drawable;
 
 public abstract class AbstractObjectOfField implements Drawable, Destroyable{
 
-	private int x;
-	private int y;
+	protected int x;
+	protected int y;
 	protected Image image;
 	protected Image image_up;
 	protected Image image_down;
@@ -40,6 +40,11 @@ public abstract class AbstractObjectOfField implements Drawable, Destroyable{
 
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	public void destroy(){
+		setX (-1000);
+		setY (-1000);
 	}
 }
 

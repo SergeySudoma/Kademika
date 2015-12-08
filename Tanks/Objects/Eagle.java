@@ -4,7 +4,7 @@ import java.awt.*;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class Eagle extends AbstractObjectOfField{
+public class Eagle extends AbstractObjectOfField {
 	
 	private Image image;
 
