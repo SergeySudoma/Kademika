@@ -138,7 +138,6 @@ public class SimpleLinkedList implements Iterable<Object> {
 		//list.addAfter(int6, int1);
 		//list.printList();
 		
-		list.iterator().hasNext();
 
 	}
 
