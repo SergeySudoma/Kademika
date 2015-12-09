@@ -83,7 +83,7 @@ public class SimpleLinkedList implements Iterable<Object> {
 		}
 	}
 
-	public class SLLIterator implements Iterator<Object> {
+	public class Iter implements Iterator<Object> {
 
 		private Node node;
 
@@ -144,6 +144,6 @@ public class SimpleLinkedList implements Iterable<Object> {
 
 	@Override
 	public Iterator<Object> iterator() {
-		return new SLLIterator();
+		return new Iter();
 	}
 }
