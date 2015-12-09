@@ -68,8 +68,8 @@ public class SimpleLinkedList implements Iterable<Object> {
 
 	private class Node {
 
-		private Object obj = null;
-		private Node ref = null;
+		private Object obj;
+		private Node ref;
 
 		public Node() {
 		}
@@ -85,60 +85,31 @@ public class SimpleLinkedList implements Iterable<Object> {
 
 	public class Iter implements Iterator<Object> {
 
-		private Node node;
+		Node node;
+
+		public Iter() {
+			node = new Node();
+			node.ref = root;
+		}
 
 		@Override
 		public boolean hasNext() {
-			if (node.obj != null && node.ref != null) {
-				return false;
+			if (node.ref != null) {
+
+				return true;
 			}
-			return true;
+			return false;
 		}
 
 		@Override
 		public Object next() {
-			if (node == null && root != null) {
-				node = root;
-				return node.obj;
-			}
 			if (hasNext()) {
-				node.obj = node.ref;
+				node = node.ref;
 				return node.obj;
-			}
-			else{
-			throw new IllegalStateException("no more elems");
+			} else {
+				throw new IllegalStateException("no more elems");
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-
-		SimpleLinkedList list = new SimpleLinkedList();
-
-		Integer int1 = 1;
-		Integer int2 = 2;
-		Integer int3 = 3;
-		Integer int4 = 4;
-		Integer int5 = 5;
-		Integer int6 = 6;
-
-		// list.addFirst(int1);
-		// list.addFirst(int2);
-		// list.addFirst(int3);
-		// list.addFirst(int4);
-		// list.addFirst(int5);
-		// list.printList();
-
-		list.addLast(int2);
-		list.addLast(int3);
-		list.addLast(int4);
-		list.addLast(int5);
-		list.printList();
-
-		//list.addAfter(int6, int1);
-		//list.printList();
-		
-
 	}
 
 	@Override
