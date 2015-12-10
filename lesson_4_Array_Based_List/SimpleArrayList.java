@@ -1,6 +1,8 @@
 package lesson_4_Array_Based_List;
 
-public class SimpleArrayList {
+import java.util.Iterator;
+
+public class SimpleArrayList implements Iterable<Object>{
 
 	private Object[] arr;
 
@@ -24,7 +26,7 @@ public class SimpleArrayList {
 			if (arr[i].equals(obj)) {
 				Object[] temp = new Object[arr.length - 1];
 				if(i > 0){
-					System.arraycopy(arr, 0, temp, 0, i - 1);
+					System.arraycopy(arr, 0, temp, 0, i);
 					System.arraycopy(arr, i + 1, temp, i, arr.length - 1 - i);
 					arr = temp;
 				}
@@ -65,5 +67,34 @@ public class SimpleArrayList {
 				arr[i] = obj;
 			}
 		}
+	}
+
+	@Override
+	public Iterator iterator() {
+		return new Iter();
+	}
+	
+	public class Iter implements Iterator<Object>{
+
+		int position = 0;
+		
+		@Override
+		public boolean hasNext() {
+			if(arr.length > 0 && position < arr.length){
+				return true;
+			}
+			if(position == arr.length - 1){
+				return false;
+			}			
+			return false;
+		}
+
+		@Override
+		public Object next() {
+			return arr[position++];
+			
+		}
+		
+		
 	}
 }
