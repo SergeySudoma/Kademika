@@ -53,6 +53,9 @@ public class UI{
 		panel.add(carOpel);
 		panel.add(carSubaru);
 		panel.add(carDodge);
+		
+		JTextField quantityField = new JTextField();
+		panel.add(quantityField);
 				
 		JButton buttonBuy = new JButton("BUY");
 		panel.add(buttonBuy);
