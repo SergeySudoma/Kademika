@@ -30,7 +30,7 @@ public class UI{
 		this.shop = shop;
 		initFrame();
 		addComponents();
-	
+		frame.setVisible(true);
 	}
 
 	private void addComponents() throws ParseException {
@@ -64,7 +64,6 @@ public class UI{
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.add(panel);
 		frame.pack();
-		frame.setVisible(true);
 	}
 
 }
