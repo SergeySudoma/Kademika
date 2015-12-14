@@ -3,15 +3,21 @@ package lesson_5_gui_for_shop;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.text.Format;
+import java.text.NumberFormat;
+import java.text.ParseException;
 
+import javax.print.attribute.standard.JobName;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.text.MaskFormatter;
 
 
 public class UI{
@@ -20,14 +26,14 @@ public class UI{
 	private JFrame frame;
 	private JPanel panel;
 	
-	public UI(Shop shop) {
+	public UI(Shop shop) throws ParseException {
 		this.shop = shop;
 		initFrame();
 		addComponents();
 	
 	}
 
-	private void addComponents() {
+	private void addComponents() throws ParseException {
 		
 		JLabel nameLabel = new JLabel("Enter your name: ");
 		panel.add(nameLabel);
@@ -35,28 +41,17 @@ public class UI{
 		JTextField nameField = new JTextField();
 		panel.add(nameField);
 		
-		JRadioButton carAudi = new JRadioButton("AUDI");
-		JRadioButton carBMW = new JRadioButton("BMW");
-		JRadioButton carOpel = new JRadioButton("OPEL");
-		JRadioButton carSubaru = new JRadioButton("SUBARU");
-		JRadioButton carDodge = new JRadioButton("DODGE");
-		
 		ButtonGroup group = new ButtonGroup();
-		group.add(carAudi);
-		group.add(carBMW);
-		group.add(carOpel);
-		group.add(carSubaru);
-		group.add(carDodge);
 		
-		panel.add(carAudi);
-		panel.add(carBMW);
-		panel.add(carOpel);
-		panel.add(carSubaru);
-		panel.add(carDodge);
+		for(Car car : shop.getCars()){
+			JRadioButton button = new JRadioButton(car.getModel().toString());
+			panel.add(button);
+			group.add(button);
+		}
 		
-		JTextField quantityField = new JTextField();
+		JFormattedTextField quantityField = new JFormattedTextField(new MaskFormatter("##"));
 		panel.add(quantityField);
-				
+		
 		JButton buttonBuy = new JButton("BUY");
 		panel.add(buttonBuy);
 		
