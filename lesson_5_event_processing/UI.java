@@ -35,7 +35,7 @@ public class UI {
 	ButtonGroup group;
 
 	
-	public UI(Shop shop, Database database) throws ParseException, IOException {
+	public UI(Shop shop, Database database) throws ParseException, IOException{
 		this.shop = shop;		
 		initFrame();
 		addComponents();
@@ -59,7 +59,7 @@ public class UI {
 	}
 
 
-	private void addComponents() throws ParseException, IOException {
+	private void addComponents() throws ParseException {
 		
 		frame.add(new Background());
 		
@@ -131,7 +131,13 @@ public class UI {
 				Car car = new Car();
 				getSelectedButton();
 				car.setModel(getSelectedButton());
-				shop.sellCar(car, customer, Integer.parseInt(quantityField.getText()));				
+				try {
+					shop.sellCar(car, customer, Integer.parseInt(quantityField.getText()));
+				} catch (NumberFormatException e1) {
+					System.out.println("Quantity field can't be blank");
+				} catch (ParseException e1) {
+					System.out.println("Enter required quantity!");
+				}				
 			}
 		});	
 

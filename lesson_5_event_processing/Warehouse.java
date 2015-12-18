@@ -23,22 +23,27 @@ public class Warehouse {
 		carList.add(car);
 	}
 	
-	public void removeCar(Car car){
-		if(checkAvailability(car)){
-			for(Car c : carList){
-				if(car.getModel() == (c.getModel())){
-					carList.remove(c);
-					break;
+	public void removeCar(Car car, int quantity){
+		if(checkAvailability(car, quantity)){
+			for(int i = 1; i <= quantity; i++){
+				for(Car c : carList){
+					if(car.getModel() == (c.getModel())){
+						carList.remove(c);
+						break;
+					}
 				}
 			}
 		}
 	}
 	
-	public boolean checkAvailability(Car car){
+	public boolean checkAvailability(Car car, int quantity){
+		int count = 0;
 		for(Car c : carList){
 			if(car.getModel() == c.getModel()){
-				return true;
-
+				count++;
+				if(count >= quantity){
+					return true;
+				}
 			}
 		}
 		return false;

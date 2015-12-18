@@ -11,6 +11,7 @@ public class Shop {
 
 	private Warehouse warehouse;
 	private Database database;
+	private Date date;
 	private Deal deal;
 	private int cash = 50000;
 
@@ -19,21 +20,32 @@ public class Shop {
 		this.database = database;
 	}
 
-	public void sellCar(Car car, Customer customer, int quantity) {
-		if (warehouse.checkAvailability(car) == true) {
+	public void sellCar(Car car, Customer customer, int quantity) throws ParseException {
+		if (warehouse.checkAvailability(car, quantity)) {
 			deal = new Deal();
 			deal.setCar(car);
 			deal.setCustomer(customer);
-			deal.setDate(new Date());
+			deal.setDate(setDate());
 			deal.setPrice(database.getSalePrice(car.getModel()));
 			deal.setQuantity(quantity);
 			database.addSalesList(deal);
-			warehouse.removeCar(car);
+			warehouse.removeCar(car, quantity);
 			cash = cash + database.getSalePrice(car.getModel());
-			System.out.println(car.getModel() + " sold! Bank account: " + cash);
-		} else {
-			System.out.println("Car is not available on stock!!");
+			System.out.println(quantity + " " + car.getModel() + " is sold to "+ customer.getName() + " " + parseStringDate(date)  + " Bank account: $" + cash);
 		}
+		if(car.getModel() != null){
+			
+		}
+		else{
+			System.out.println("Not enough on stock");
+		}
+	}
+
+
+	private Date setDate() {
+		Date d = new Date();
+		date = d; 
+		return d;
 	}
 
 	public void purchaseCar(Car car) {

@@ -1,35 +1,40 @@
 package lesson_5_event_processing;
 
 public class Car {
-	
+
 	private Model model;
 	private int priceSale;
 	private int pricePurchase;
-	
-	public Car(){
-		
+
+	public Car() {
+
 	}
-	
-	public Car(Model model){
+
+	public Car(Model model) {
 		this.model = model;
 	}
-	
+
 	public Model getModel() {
 		return model;
 	}
-	
+
 	public void setModel(Model model) {
 		this.model = model;
 	}
-	
+
 	public void setModel(String model) {
-		for(Model mod : Model.values()){
-			if(model.contains(mod.toString())){
-				setModel(mod);
+		try {
+			for (Model mod : Model.values()) {
+				if (model.contains(mod.toString())) {
+					setModel(mod);
+				}
 			}
+		} catch (Exception e) {
+			System.out.println("Car is not selected. Select car.");
 		}
 	}
 
+	
 	public int getPriceSale() {
 		return priceSale;
 	}
