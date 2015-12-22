@@ -22,14 +22,11 @@ public abstract class AbstractObjectOfField implements Drawable, Destroyable{
 		
 	}
 	
-
-	
 	public AbstractObjectOfField(int x, int y){
 		this.x = x;
 		this.y = y;
 	}
-	
-	
+		
 	public int getX() {
 		return x;
 	}

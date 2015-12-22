@@ -17,7 +17,7 @@ public class Rock extends AbstractObjectOfField {
 
 	private void initImage() {		
 		try {
-			image = ImageIO.read(this.getClass().getResource("Rock.png"));
+			image = ImageIO.read(this.getClass().getResource("rock.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

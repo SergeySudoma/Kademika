@@ -13,14 +13,14 @@ public class Bullet implements Drawable, Destroyable{
 
 	private  int x;
 	private  int y;
-	Direction direction;
+	private Direction direction;
 	private String shooter;
-	protected Image image_up;
-	protected Image image_down;
-	protected Image image_left;
-	protected Image image_right;
+	private Image image_up;
+	private Image image_down;
+	private Image image_left;
+	private Image image_right;
 
-	private int speed = 7;
+	private int speed = 3;
 
 	public Bullet(int x, int y, Direction direction) {
 		this.x = x;

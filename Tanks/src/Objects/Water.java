@@ -19,7 +19,7 @@ public class Water extends AbstractObjectOfField{
 
 		private void initImage() {
 			try {
-				image = ImageIO.read(this.getClass().getResource("Water.png"));
+				image = ImageIO.read(this.getClass().getResource("water.jpg"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}			

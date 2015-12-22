@@ -1,14 +1,16 @@
 package Objects;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
-public class Eagle extends AbstractObjectOfField {
-	
+public class Blank extends AbstractObjectOfField{
+
 	private Image image;
 
-	public Eagle(int x, int y){
+	public Blank(int x, int y){
 		super(x, y);
 		initImage();
 	}
@@ -16,7 +18,7 @@ public class Eagle extends AbstractObjectOfField {
 
 	private void initImage() {
 		try {
-			image = ImageIO.read(this.getClass().getResource("Shield.png"));
+			image = ImageIO.read(this.getClass().getResource("ground2.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
@@ -29,4 +31,3 @@ public class Eagle extends AbstractObjectOfField {
 	}
 
 }
-

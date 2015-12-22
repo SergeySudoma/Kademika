@@ -2,16 +2,23 @@ package Logic;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.security.auth.DestroyFailedException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
 import Objects.BT7;
 import Objects.Blank;
 import Objects.Bullet;
-import Objects.Eagle;
+import Objects.BurnedBlank;
+import Objects.ExplosionAnimation;
+import Objects.ShotAnimation;
 import Objects.T34;
 import Objects.Tiger;
 import Logic.Direction;
@@ -26,9 +33,9 @@ public class ActionField extends JPanel {
 	private Tiger agressor;
 	private BT7 killer;
 	private Bullet bullet;
-	private Eagle eagle;
 	private String coordinates;
 	private int separator;
+	private JFrame frame;
 
 	public ActionField() throws Exception {
 
@@ -37,49 +44,111 @@ public class ActionField extends JPanel {
 		agressor = new Tiger(battleField, parseX(coordinates),
 				parseY(coordinates), Direction.RIGHT);
 		defender = new T34(battleField);
-		killer = new BT7(battleField, 320, 320, Direction.RIGHT);
+		killer = new BT7(battleField, 128, 64, Direction.RIGHT);
 
-		JFrame frame = new JFrame("TANKS GAME");
+		frame = new JFrame("TANKS GAME");
 		frame.setLocation(750, 150);
 		frame.setMinimumSize(new Dimension(battleField.getBfWidth() + 15,
 				battleField.getBfHeight() + 35));
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().add(this);
+		setLayout(null);
 		frame.pack();
 		frame.setVisible(true);
 		repaint();
 	}
 
+
 	void runTheGame() throws Exception {
 
-		// while (true) {
-		// if(!defender.getIsDestroyed()){
-		// processAction(defender.setUp(), defender);
-		// }
+//		 while (true) {
+//		 if(!defender.getIsDestroyed()){
+//		 processAction(defender.setUp(), defender);
+//		 }
 		destroyTheEagle();
-		// }
+//		 }
 	}
+	
+	private void drawExplosionAnimation(Bullet bullet) throws InterruptedException, IOException{
 
+		int x = bullet.getX() / PIXELS_IN_CELL * PIXELS_IN_CELL;
+		int y = bullet.getY() / PIXELS_IN_CELL * PIXELS_IN_CELL;
+		int delay = 1000;
+		ExplosionAnimation explosionAnimation = new ExplosionAnimation();
+		explosionAnimation.setBounds(x, y, PIXELS_IN_CELL, PIXELS_IN_CELL);
+		explosionAnimation.setOpaque(false);
+		add(explosionAnimation);
+		battleField.addToList(new BurnedBlank(x, y));
+		
+		Timer timer = new Timer(delay, new ActionListener() {			
+			
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                remove(explosionAnimation);
+            }
+        });
+        timer.start();
+
+}
+	
+	
+	private void drawShotAnimation(Bullet bullet){
+
+		int xShift = 3;
+		int yShift = 50;
+		int dimensionX = 50;
+		int dimensionY = 50;
+		int delay = 300;
+		ShotAnimation shotAnimation = new ShotAnimation(bullet);
+		if(bullet.getDirection() == Direction.UP){
+			shotAnimation.setBounds(bullet.getX() - xShift, bullet.getY() - yShift, dimensionX, dimensionY);
+		}
+		else if(bullet.getDirection() == Direction.DOWN){
+			shotAnimation.setBounds(bullet.getX() - xShift, bullet.getY() + yShift, dimensionX, dimensionY);
+		}
+		else if(bullet.getDirection() == Direction.LEFT){
+			shotAnimation.setBounds(bullet.getX() - yShift, bullet.getY() + xShift, dimensionX, dimensionY);
+		}
+		else{
+			shotAnimation.setBounds(bullet.getX() + yShift, bullet.getY() + xShift, dimensionX, dimensionY);
+		}
+		shotAnimation.setOpaque(false);
+		add(shotAnimation);
+		
+		Timer timer = new Timer(delay, new ActionListener() {			
+			
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                remove(shotAnimation);
+            }
+        });
+        timer.start();
+	}
+	
 	public void destroyTheEagle() throws Exception {
+		int eagleX = battleField.getEagleX() / battleField.PIXELS_IN_CELL * battleField.PIXELS_IN_CELL;
+		int eagleY = battleField.getEagleY() / battleField.PIXELS_IN_CELL  * battleField.PIXELS_IN_CELL;
+		
+		int killerX = killer.getX() / battleField.PIXELS_IN_CELL * battleField.PIXELS_IN_CELL;
+		int killerY = killer.getY() / battleField.PIXELS_IN_CELL * battleField.PIXELS_IN_CELL;
 
-		int eagleX = battleField.getEagleX() / battleField.PIXELS_IN_CELL;
-		int eagleY = battleField.getEagleX() / battleField.PIXELS_IN_CELL;
-
-		int killerX = killer.getX() / battleField.PIXELS_IN_CELL;
-		int killerY = killer.getY() / battleField.PIXELS_IN_CELL;
-		int xDif = eagleX - killerX;
-		int yDif = eagleY - killerY;
-
-		for (int i = 0; i <= Math.abs(xDif); i++) {
+		int xDif = (eagleX - killerX) / battleField.PIXELS_IN_CELL;
+		int yDif = (eagleY - killerY) / battleField.PIXELS_IN_CELL;
+		
+		for (int i = 1; i <= Math.abs(xDif); i++) {
 			if (xDif > 0) {
 				processAction(Actions.MOVE_RIGHT, killer);
+				processAction(Actions.FIRE, killer);
 			} else if (xDif < 0) {
 				processAction(Actions.MOVE_LEFT, killer);
+				processAction(Actions.FIRE, killer);
 			}
 		}
-			if (yDif > 0) {
+			if (yDif < 0) {
 				processAction(Actions.TURN_UP, killer);
-			} else if (yDif < 0) {
+			} else if (yDif > 0) {
 				processAction(Actions.TURN_DOWN, killer);
 			}
 			
@@ -121,22 +190,18 @@ public class ActionField extends JPanel {
 
 	private void processAction(Actions action, Tank tank) throws Exception {
 		if (action == Actions.MOVE_UP) {
-			tank.moveUp();
 			processMove(tank);
 		}
 
 		else if (action == Actions.MOVE_DOWN) {
-			tank.moveDown();
 			processMove(tank);
 		}
 
 		else if (action == Actions.MOVE_LEFT) {
-			tank.moveLeft();
 			processMove(tank);
 		}
 
 		else if (action == Actions.MOVE_RIGHT) {
-			tank.moveRight();
 			processMove(tank);
 		}
 
@@ -164,7 +229,7 @@ public class ActionField extends JPanel {
 
 	private void processMove(Tank tank) throws InterruptedException {
 		if (isAvailableForMove(tank)) {
-			for (int i = 0; i < 64; i++) {
+			for (int i = 0; i < battleField.PIXELS_IN_CELL; i++) {
 				Thread.sleep(tank.getSpeed());
 				this.repaint();
 
@@ -192,7 +257,7 @@ public class ActionField extends JPanel {
 		}
 	}
 
-	boolean processInterception() throws InterruptedException,
+	private boolean processInterception() throws InterruptedException,
 			DestroyFailedException {
 		String coodinates = getQuadrant(bullet.getX(), bullet.getY());
 		separator = coodinates.indexOf("_");
@@ -209,9 +274,8 @@ public class ActionField extends JPanel {
 				getQuadrant(agressor.getX(), agressor.getY()))
 				&& bullet.getShooter().equals(defender.getMySimpleName())) {
 			agressor.delArmor();
-			bullet.destroy();
 			if (agressor.getArmor() == 0) {
-				destroy();
+				agressor.destroy();
 			}
 		}
 
@@ -219,7 +283,6 @@ public class ActionField extends JPanel {
 				getQuadrant(defender.getX(), defender.getY()))
 				&& bullet.getShooter().equals(agressor.getMySimpleName())) {
 			defender.destroy();
-			bullet.destroy();
 		}
 
 		return false;
@@ -241,7 +304,7 @@ public class ActionField extends JPanel {
 				coordinates.length()));
 	}
 
-	private void destroy() throws InterruptedException {
+	private void destroy() throws InterruptedException, DestroyFailedException {
 		agressor.destroy();
 		bullet.destroy();
 		Thread.sleep(3000);
@@ -259,7 +322,7 @@ public class ActionField extends JPanel {
 		return result;
 	}
 
-	public boolean checkBulletOutOfField() {
+	private boolean checkBulletOutOfField() {
 		if (bullet.getX() > battleField.getBfWidth() - 25 || bullet.getX() == 0
 				|| bullet.getY() > battleField.getBfWidth() - 25
 				|| bullet.getY() == 0) {
@@ -294,9 +357,11 @@ public class ActionField extends JPanel {
 
 		this.bullet = bullet;
 
+		drawShotAnimation(bullet);
+
 		while (bullet.getX() > 0 && bullet.getX() <= 576 - 25
 				&& bullet.getY() > 0 && bullet.getY() <= 576 - 25) {
-
+			
 			if (bullet.getDirection() == Direction.UP) {
 				bullet.updateY(-STEP);
 			}
@@ -316,10 +381,10 @@ public class ActionField extends JPanel {
 			Thread.sleep(bullet.getSpeed());
 
 			if (processInterception()) {
+				drawExplosionAnimation(bullet);
 				bullet.destroy();
 				repaint();
 			}
 		}
 	}
-
 }

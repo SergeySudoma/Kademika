@@ -11,20 +11,16 @@ public abstract class AbstractTank extends AbstractObjectOfField implements
 		Drawable, Tank {
 
 	private int speed = 10;
-	private BattleField bf;
-	int index = 0;
+	int actionsCount = 0;
 	private Direction direction;
 	private String mySimpleName = this.getClass().getSimpleName();
 
 	public AbstractTank(BattleField bf) {
-
 		this.x = 256;
 		this.y = 256;
 	}
 
-	public AbstractTank(BattleField bf, int x, int y,
-			Direction direction) {
-		this.bf = bf;
+	public AbstractTank(int x, int y, Direction direction) {
 		this.x = x;
 		this.y = y;
 		this.direction = direction;
@@ -83,31 +79,11 @@ public abstract class AbstractTank extends AbstractObjectOfField implements
 		this.direction = direction;
 	}
 
-	@Override
-	public void moveUp() throws InterruptedException {
-		direction = Direction.UP;
+	public Bullet fire() throws Exception {
+		Bullet bullet = new Bullet(x, y, direction);
+		bullet.setShooter(this.getClass().getSimpleName());		
+		return bullet;
 	}
-	
-	@Override
-	public void moveDown() throws InterruptedException {
-		direction = Direction.DOWN;
-	}
-
-	@Override
-	public void moveLeft() throws InterruptedException {
-		direction = Direction.LEFT;
-	}
-
-	@Override
-	public void moveRight() throws InterruptedException {
-		direction = Direction.RIGHT;
-	}
-
-	 public Bullet fire() throws Exception {
-	 Bullet bullet = new Bullet(x + 25, y + 25 , direction);
-	 bullet.setShooter(this.getClass().getSimpleName());
-	 return bullet;
-	 }
 
 	public String getMySimpleName() {
 		return mySimpleName;

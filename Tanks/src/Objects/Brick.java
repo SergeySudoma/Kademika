@@ -16,7 +16,7 @@ public class Brick extends AbstractObjectOfField {
 
 	private void initImage() {
 		try {
-			image = ImageIO.read(this.getClass().getResource("Brick.png"));
+			image = ImageIO.read(this.getClass().getResource("brick.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
