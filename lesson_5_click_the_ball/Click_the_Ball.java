@@ -1,6 +1,7 @@
 package lesson_5_click_the_ball;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -12,22 +13,15 @@ import javax.swing.WindowConstants;
 
 	public class Click_the_Ball extends JPanel implements MouseMotionListener {
 		
-		private JFrame frame;
-		private Click_the_Ball ctb;
-		private int xBall = 150;
-		private int yBall = 150;
-		private int diam = 45;
-		private int frameX = 400;
-		private int frameY = 400;
-		int circleCenterX = xBall + diam / 2;
-		int circleCenterY = yBall + diam / 2;
+		private static JFrame frame;
+		private static Click_the_Ball ctb;
+		private static int xBall = 150;
+		private static int yBall = 150;
+		private static int diam = 45;
+		private static int frameX = 400;
+		private static int frameY = 400;
 		
 		public Click_the_Ball(){
-			frame = new JFrame();
-			frame.setBounds(200, 200, frameX, frameY);
-			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-			frame.add(ctb);
-			frame.setVisible(true);
 			addMouseMotionListener(this);
 		}
 		
@@ -39,7 +33,14 @@ import javax.swing.WindowConstants;
 		}
 		
 		public static void main(String[] args){		
-			new Click_the_Ball();
+			frame = new JFrame();
+			frame.setBounds(200, 200, frameX, frameY);
+			frame.setMinimumSize(new Dimension(frameX, frameY));
+			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+			ctb = new Click_the_Ball();
+			frame.add(ctb);
+			frame.setVisible(true);
+
 		}
 
 		@Override
@@ -49,6 +50,9 @@ import javax.swing.WindowConstants;
 		
 		@Override
 		public void mouseMoved(MouseEvent e) {
+			
+			int circleCenterX = xBall + diam / 2;
+			int circleCenterY = yBall + diam / 2;
 			
 			ArrayList<Integer> byX = new ArrayList<Integer>();
 			ArrayList<Integer> byY = new ArrayList<Integer>();
@@ -91,11 +95,11 @@ import javax.swing.WindowConstants;
 					yBall -= 10;
 				}
 				
-				if(circleCenterX <= 0 || circleCenterX >= frameX){
+				if(circleCenterX <= 0 || circleCenterX >= 400){
 					xBall = 200;
 				}
 				
-				if(circleCenterY <= 0 || circleCenterY >= frameY){
+				if(circleCenterY <= 0 || circleCenterY >= 400){
 					yBall = 200;
 				}
 				
