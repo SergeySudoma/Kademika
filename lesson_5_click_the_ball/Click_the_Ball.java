@@ -14,7 +14,6 @@ import javax.swing.WindowConstants;
 	public class Click_the_Ball extends JPanel implements MouseMotionListener {
 		
 		private static JFrame frame;
-		private static Click_the_Ball ctb;
 		private static int xBall = 150;
 		private static int yBall = 150;
 		private static int diam = 45;
@@ -37,8 +36,7 @@ import javax.swing.WindowConstants;
 			frame.setBounds(200, 200, frameX, frameY);
 			frame.setMinimumSize(new Dimension(frameX, frameY));
 			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-			ctb = new Click_the_Ball();
-			frame.add(ctb);
+			frame.add(new Click_the_Ball());
 			frame.setVisible(true);
 
 		}
