@@ -3,12 +3,13 @@ package Objects;
 import java.awt.Graphics;
 
 import Logic.BattleField;
+import Logic.Destroyable;
 import Logic.Direction;
 import Logic.Drawable;
 import Logic.Tank;
 
 public abstract class AbstractTank extends AbstractObjectOfField implements
-		Drawable, Tank {
+		Drawable, Tank, Destroyable {
 
 	private int speed = 10;
 	int actionsCount = 0;
@@ -17,7 +18,8 @@ public abstract class AbstractTank extends AbstractObjectOfField implements
 
 	public AbstractTank(BattleField bf) {
 		this.x = 256;
-		this.y = 256;
+		this.y = 320;
+		this.direction = Direction.UP;
 	}
 
 	public AbstractTank(int x, int y, Direction direction) {
