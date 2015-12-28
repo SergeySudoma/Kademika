@@ -1,5 +1,7 @@
 package Objects;
 
+import java.io.IOException;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -10,6 +12,7 @@ import Logic.Direction;
 
 public class ShotAnimation extends JLabel{
 
+	private AudioInputStream inputStream;
 	private ImageIcon image;
 	
 	public ShotAnimation(Bullet bullet){
@@ -21,12 +24,13 @@ public class ShotAnimation extends JLabel{
 	private void playSound() {
 		try {
 		Clip clip = AudioSystem.getClip();
-        AudioInputStream inputStream;
 		inputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("shot_sound.wav"));
         clip.open(inputStream);
         clip.start(); 
-		}
-        catch(Exception e){        	
+        
+        }
+        catch(Exception e){  
+        	
         }
 	}
 	

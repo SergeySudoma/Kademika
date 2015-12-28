@@ -1,11 +1,14 @@
 package Objects;
 
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
+
+import Logic.BadTanksMarker;
 import Logic.BattleField;
 import Logic.Direction;
 
-public class Tiger extends AbstractTank{
+public class Tiger extends AbstractTank  implements BadTanksMarker{
 	
 	private int armor = 2;
 

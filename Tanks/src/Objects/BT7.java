@@ -5,10 +5,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import Logic.Actions;
+import Logic.BadTanksMarker;
 import Logic.BattleField;
 import Logic.Direction;
 
-public class BT7 extends AbstractTank{
+public class BT7 extends AbstractTank implements BadTanksMarker{
 	
 	private int armor = 2;
 
@@ -20,27 +21,6 @@ public class BT7 extends AbstractTank{
 	}
 	
 
-	private Actions[] actions = {
-			Actions.MOVE_UP,
-			Actions.MOVE_UP,
-			Actions.MOVE_UP,
-			Actions.MOVE_UP,
-			Actions.MOVE_UP,
-			Actions.MOVE_UP,
-//			Actions.FIRE,
-//			Actions.FIRE,
-//			Actions.FIRE,
-//			Actions.FIRE,
-//			Actions.FIRE
-		};
-		
-		public Actions setUp(){
-			if(actionsCount >= actions.length){
-				actionsCount = 0;
-			}
-			return actions[actionsCount++];
-		}
-	
 	private void initImage() {		
 		try {
 			image_up = ImageIO.read(this.getClass().getResource("red_tank_up.png"));

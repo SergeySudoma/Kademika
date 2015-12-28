@@ -18,7 +18,7 @@ public abstract class AbstractTank extends AbstractObjectOfField implements
 
 	public AbstractTank(BattleField bf) {
 		this.x = 256;
-		this.y = 320;
+		this.y = 128;
 		this.direction = Direction.UP;
 	}
 
