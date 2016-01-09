@@ -1,17 +1,14 @@
 package Logic;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.security.auth.DestroyFailedException;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import javax.swing.WindowConstants;
-
+import Objects.AbstractTank;
 import Objects.BT7;
 import Objects.Blank;
 import Objects.Bullet;
@@ -26,47 +23,42 @@ import Logic.BattleField;
 public class ActionField extends JPanel {
 
 	private BattleField battleField;
-	private T34 defender;
+	private AbstractTank defender;
 	private Tiger agressor;
 	private BT7 killer;
 	private Bullet bullet;
 	private String coordinates;
-	private JFrame frame;
 	private AI ai;
 	public static final int STEP = 1;
 	
 
 	public ActionField() throws Exception {
-
 		battleField = new BattleField();
 		getPredefiendCoordinates();
 		agressor = new Tiger(battleField, parseX(coordinates), parseY(coordinates), Direction.DEFAULT);
-		defender = new T34(battleField);
 		killer = new BT7(battleField, 64, 448, Direction.DEFAULT);
 		ai = new AI(this, battleField);
-		
-		frame = new JFrame("TANKS GAME");
-		frame.setLocation(750, 150);
-		frame.setMinimumSize(new Dimension(battleField.getBfWidth() + 15, battleField.getBfHeight() + 35));
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.getContentPane().add(this);
-		setLayout(null);
-		frame.pack();
-		frame.setVisible(true);
-		repaint();
+
 	}
+	
 
-
+	public void addT34() {
+		defender = new T34(battleField);		
+	}
+	
+	
+	public void addTiger() {
+		defender = new Tiger(battleField);		
+	}
+	
 	void runTheGame() throws Exception {
-
-		while(true){
-			
+				
+		while(true){			
 			Actions defenderAction = ai.destroyTheTarget(defender, killer);
 			processAction(defenderAction, defender);
 
 			Actions killerAction = ai.destroyTheTarget(killer, battleField.getEagle());
 			processAction(killerAction, killer);
-			
 
 		}
 
@@ -244,9 +236,9 @@ public class ActionField extends JPanel {
 
 	private boolean processInterception() throws InterruptedException,
 			DestroyFailedException {
-		String coodinates = getQuadrant(bullet.getX(), bullet.getY());
-		int checkBulletY = parseX(coodinates);
-		int checkBulletX = parseY(coodinates);
+		String bulletQuadrant = getQuadrant(bullet.getX(), bullet.getY());
+		int checkBulletY = parseX(bulletQuadrant);
+		int checkBulletX = parseY(bulletQuadrant);
 
 		if (battleField.checkInterception(checkBulletX, checkBulletY) == true) {
 			battleField.updateObjects(checkBulletX, checkBulletY);
@@ -254,39 +246,15 @@ public class ActionField extends JPanel {
 			return true;
 		}
 
-		if (getQuadrant(bullet.getX(), bullet.getY()).equals(
-				getQuadrant(agressor.getX(), agressor.getY()))
-				&& bullet.getShooter().equals(defender.getMySimpleName())) {
-			agressor.delArmor();
-			if (agressor.getArmor() == 0) {
-				agressor.destroy();
-				return true;
+		for(AbstractTank tank : AbstractTank.getTankList()){
+				String tankQuadrant = getQuadrant(tank.getX(), tank.getY());
+				int tankQuadrantX = parseX(tankQuadrant);
+				int tankQuadrantY = parseY(tankQuadrant);
+				if(checkBulletX == tankQuadrantX && checkBulletY == tankQuadrantY  && !tank.getTankID().equals(bullet.getShooter())){
+					tank.destroy();
+					return true;
+				}
 			}
-		}
-		
-		if (getQuadrant(bullet.getX(), bullet.getY()).equals(
-				getQuadrant(killer.getX(), killer.getY()))
-				&& bullet.getShooter().equals(defender.getMySimpleName())) {
-			  killer.delArmor();
-			if (killer.getArmor() == 0) {
-				killer.destroy();
-				return true;
-			}
-		}
-
-		if (getQuadrant(bullet.getX(), bullet.getY()).equals(
-				getQuadrant(defender.getX(), defender.getY()))
-				&& bullet.getShooter().equals(agressor.getMySimpleName())) {
-			defender.destroy();
-			return true;
-		}
-		
-		if (getQuadrant(bullet.getX(), bullet.getY()).equals(
-				getQuadrant(defender.getX(), defender.getY()))
-				&& bullet.getShooter().equals(killer.getMySimpleName())) {
-			defender.destroy();
-			return true;
-		}
 
 		return false;
 	}

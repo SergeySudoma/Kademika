@@ -4,11 +4,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import Logic.BadTanksMarker;
 import Logic.BattleField;
 import Logic.Direction;
 
-public class Tiger extends AbstractTank  implements BadTanksMarker{
+public class Tiger extends AbstractTank{
 	
 	private int armor = 2;
 
@@ -17,6 +16,11 @@ public class Tiger extends AbstractTank  implements BadTanksMarker{
 		super(x, y, direction);
 		initImage();
 		
+	}
+	
+	public Tiger(BattleField bf) {
+		super(bf);
+		initImage();		
 	}
 	
 	private void initImage() {		

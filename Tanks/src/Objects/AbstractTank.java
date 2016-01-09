@@ -1,6 +1,7 @@
 package Objects;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import Logic.BattleField;
 import Logic.Destroyable;
@@ -12,20 +13,34 @@ public abstract class AbstractTank extends AbstractObjectOfField implements
 		Drawable, Tank, Destroyable {
 
 	private int speed = 10;
-	int actionsCount = 0;
+	public int actionsCount = 0;
 	private Direction direction;
 	private String mySimpleName = this.getClass().getSimpleName();
+	private static Integer tankID = 0;
+	private static ArrayList<AbstractTank> tankList = new ArrayList<AbstractTank>();
 
 	public AbstractTank(BattleField bf) {
 		this.x = 256;
 		this.y = 128;
 		this.direction = Direction.UP;
+		++tankID;
+		tankList.add(this);
 	}
 
 	public AbstractTank(int x, int y, Direction direction) {
 		this.x = x;
 		this.y = y;
 		this.direction = direction;
+		++tankID;
+		tankList.add(this);
+	}
+	
+	public Integer getTankID(){
+		return tankID;
+	}
+	
+	public static ArrayList<AbstractTank> getTankList(){
+		return tankList;
 	}
 
 	public void draw(Graphics g) {
@@ -83,7 +98,7 @@ public abstract class AbstractTank extends AbstractObjectOfField implements
 
 	public Bullet fire() throws Exception {
 		Bullet bullet = new Bullet(x, y, direction);
-		bullet.setShooter(this.getClass().getSimpleName());		
+		bullet.setShooter(tankID.toString());		
 		return bullet;
 	}
 

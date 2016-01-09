@@ -1,8 +1,6 @@
 package Objects;
 
 import java.awt.Image;
-import java.io.ObjectInputStream.GetField;
-
 import javax.security.auth.Destroyable;
 
 import Logic.Drawable;

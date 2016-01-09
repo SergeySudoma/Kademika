@@ -14,8 +14,8 @@ import Objects.Water;
 
 public class BattleField implements Drawable {
 
-	private int bfWidth = 576;
-	private int bfHeight = 576;
+	public static final int bfWidth = 576;
+	public static final int bfHeight = 576;
 	private int eagleX;
 	private int eagleY;
 	private Eagle eagle;

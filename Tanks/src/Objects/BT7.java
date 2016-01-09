@@ -5,11 +5,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import Logic.Actions;
-import Logic.BadTanksMarker;
 import Logic.BattleField;
 import Logic.Direction;
 
-public class BT7 extends AbstractTank implements BadTanksMarker{
+public class BT7 extends AbstractTank{
 	
 	private int armor = 2;
 
