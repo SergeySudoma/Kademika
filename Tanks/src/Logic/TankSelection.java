@@ -50,9 +50,9 @@ public class TankSelection extends JPanel {
 		c.insets = new Insets(150, 17, 0, 10);
 		this.add(tiger_Button, c);
 
-		ImageIcon start_icon = new ImageIcon(this.getClass().getResource(
+		ImageIcon start_icon_unpressed = new ImageIcon(this.getClass().getResource(
 				"start_1.png"));
-		JButton start_Button = new JButton(start_icon);
+		JButton start_Button = new JButton(start_icon_unpressed);
 		this.add(start_Button, c);
 
 		bt7_Button.addActionListener(new ActionListener() {
@@ -79,8 +79,8 @@ public class TankSelection extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				if (selectedTank != null) {
+
 					try {
 						panelManager.addActionFieldAndRunGame(selectedTank);
 					} catch (Exception e1) {

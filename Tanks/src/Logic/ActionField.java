@@ -29,39 +29,58 @@ public class ActionField extends JPanel {
 	private Bullet bullet;
 	private String coordinates;
 	private AI ai;
+	private TankFrame tankFrame;
+	private String gameResult = null;
+	
 	public static final int STEP = 1;
 	
 
-	public ActionField() throws Exception {
+	public ActionField(TankFrame tankFrame) throws Exception {
+		this.tankFrame = tankFrame;
+		initContent();
+	}
+	
+	private void initContent(){
 		battleField = new BattleField();
 		getPredefiendCoordinates();
 		agressor = new Tiger(battleField, parseX(coordinates), parseY(coordinates), Direction.DEFAULT);
 		killer = new BT7(battleField, 64, 448, Direction.DEFAULT);
 		ai = new AI(this, battleField);
-
 	}
 	
 
-	public void addT34() {
+	void addT34() {
 		defender = new T34(battleField);		
 	}
 	
 	
-	public void addTiger() {
+	void addTiger() {
 		defender = new Tiger(battleField);		
 	}
 	
 	void runTheGame() throws Exception {
 				
-		while(true){			
+		while(isGameOver() == false){			
 			Actions defenderAction = ai.destroyTheTarget(defender, killer);
 			processAction(defenderAction, defender);
 
 			Actions killerAction = ai.destroyTheTarget(killer, battleField.getEagle());
 			processAction(killerAction, killer);
-
+		}	
+			tankFrame.addGameOverMenu(gameResult);
+	}
+	
+	
+	private boolean isGameOver(){
+		if(battleField.getEagle().getIsDestroyed() == true || defender.getIsDestroyed() == true){
+			gameResult = "fail";
+			return true;
 		}
-
+		else if(agressor.getIsDestroyed() == true && killer.getIsDestroyed() == true){
+			gameResult = "win";
+			return true;
+		}		
+		return false;		
 	}
 	
 

@@ -16,12 +16,13 @@ public class BattleField implements Drawable {
 
 	public static final int bfWidth = 576;
 	public static final int bfHeight = 576;
+	public static final int PIXELS_IN_CELL = 64;
+	
 	private int eagleX;
 	private int eagleY;
 	private Eagle eagle;
-	public static final int PIXELS_IN_CELL = 64;
 	private ArrayList<AbstractObjectOfField> list = new ArrayList<AbstractObjectOfField>();
-	AbstractObjectOfField toBeDeleted;
+	private AbstractObjectOfField toBeDeleted;
 
 	private String[][] battleField = {
 			{ "B", "B", "B", "B", "B", "B", "B", "B", "B" },

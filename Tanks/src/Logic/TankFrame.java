@@ -20,6 +20,8 @@ import javax.swing.WindowConstants;
 
 public class TankFrame extends JFrame implements PanelManager{
 	
+	private JPanel currentJPanel;
+	
 	public TankFrame() throws Exception{
 		super("TANKS BATTLE");
 		createFrame();
@@ -36,6 +38,12 @@ public class TankFrame extends JFrame implements PanelManager{
 	@Override
 	public void addMainMenuPanel() {
 		TankSelection ts = new TankSelection(this);
+		
+		if(currentJPanel != null){
+			remove(currentJPanel);
+		}
+		
+		currentJPanel = ts;
 		this.add(ts);
 		this.revalidate();
 	}
@@ -43,7 +51,9 @@ public class TankFrame extends JFrame implements PanelManager{
 	
 	@Override
 	public void addActionFieldAndRunGame(String selectedTank) throws Exception{
-		ActionField af = new ActionField();
+		ActionField af = new ActionField(this);
+		this.remove(currentJPanel);
+		currentJPanel = af;
 		this.add(af);
 
 		if(selectedTank.equals("t34")){
@@ -67,5 +77,15 @@ public class TankFrame extends JFrame implements PanelManager{
 		
 		this.revalidate();		
 		t1.start();		
+	}
+
+	@Override
+	public void addGameOverMenu(String gameResult) throws IOException {
+		GameOverMenu gameOverMenu = new GameOverMenu(gameResult, this);
+		this.remove(currentJPanel);
+		currentJPanel = gameOverMenu;
+		this.add(gameOverMenu);		
+		this.revalidate();
+		
 	}
 }
