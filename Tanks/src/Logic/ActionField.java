@@ -60,12 +60,15 @@ public class ActionField extends JPanel {
 	
 	void runTheGame() throws Exception {
 				
-		while(isGameOver() == false){			
-			Actions defenderAction = ai.destroyTheTarget(defender, killer);
+		while(isGameOver() == false){	
+			Actions defenderAction = ai.destroyTheTarget(defender, ai.locateNearestTargetTo(defender));
 			processAction(defenderAction, defender);
 
 			Actions killerAction = ai.destroyTheTarget(killer, battleField.getEagle());
 			processAction(killerAction, killer);
+			
+			Actions agressorAction = ai.destroyTheTarget(agressor, defender);
+			processAction(agressorAction, agressor);
 		}	
 			tankFrame.addGameOverMenu(gameResult);
 	}
@@ -267,9 +270,9 @@ public class ActionField extends JPanel {
 
 		for(AbstractTank tank : AbstractTank.getTankList()){
 				String tankQuadrant = getQuadrant(tank.getX(), tank.getY());
-				int tankQuadrantX = parseX(tankQuadrant);
-				int tankQuadrantY = parseY(tankQuadrant);
-				if(checkBulletX == tankQuadrantX && checkBulletY == tankQuadrantY  && !tank.getTankID().equals(bullet.getShooter())){
+				int tankQuadrantY = parseX(tankQuadrant);
+				int tankQuadrantX = parseY(tankQuadrant);
+				if(checkBulletX == tankQuadrantX && checkBulletY == tankQuadrantY  && tank.getTankID() != bullet.getShooter()){
 					tank.destroy();
 					return true;
 				}
@@ -304,15 +307,13 @@ public class ActionField extends JPanel {
 	}
 
 	String getQuadrant(int x, int y) {
-		int x1 = x / BattleField.PIXELS_IN_CELL;
-		int y1 = y / BattleField.PIXELS_IN_CELL;
-		String result = (x1 + "_" + y1);
-		return result;
+		int quadrantX = x / BattleField.PIXELS_IN_CELL;
+		int quadrantY = y / BattleField.PIXELS_IN_CELL;
+		return (quadrantX + "_" + quadrantY);
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		//super.paintComponent(g);
 		battleField.draw(g);
 
 		if (defender != null) {

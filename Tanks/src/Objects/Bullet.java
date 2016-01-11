@@ -14,7 +14,7 @@ public class Bullet implements Drawable, Destroyable{
 	private  int x;
 	private  int y;
 	private Direction direction;
-	private String shooter;
+	private Integer shooter;
 	private Image image_up;
 	private Image image_down;
 	private Image image_left;
@@ -83,11 +83,11 @@ public class Bullet implements Drawable, Destroyable{
 		}
 	}
 
-	public String getShooter() {
+	public Integer getShooter() {
 		return shooter;
 	}
 
-	public void setShooter(String shooter) {
+	public void setShooter(Integer shooter) {
 		this.shooter = shooter;
 	}
 
