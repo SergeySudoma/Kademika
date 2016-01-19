@@ -7,6 +7,6 @@ public class Annotation {
 	@Target(ElementType.METHOD)
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface Service{
-		boolean check() default false;
+		boolean isService() default false;
 	}
 }
