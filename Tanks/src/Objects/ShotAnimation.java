@@ -1,7 +1,5 @@
 package Objects;
 
-import java.io.IOException;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -12,22 +10,38 @@ import Logic.Direction;
 
 public class ShotAnimation extends JLabel{
 
-	private AudioInputStream inputStream;
 	private ImageIcon image;
 	
 	public ShotAnimation(Bullet bullet){
 		initImage(bullet.getDirection());
+		initPosition(bullet);
 		this.setIcon(image);
 		playSound();
+	}
+
+	private void initPosition(Bullet bullet) {
+
+		int xShift = 3;
+		int yShift = 50;
+		int dimensionX = 50;
+		int dimensionY = 50;		
+		boolean directionUp = bullet.getDirection() == Direction.UP;
+		boolean directionDown = bullet.getDirection() == Direction.DOWN;
+		boolean directionLeft = bullet.getDirection() == Direction.LEFT;
+		boolean directionRight = bullet.getDirection() == Direction.RIGHT;
+		
+		if(directionUp)this.setBounds(bullet.getX() - xShift, bullet.getY() - yShift, dimensionX, dimensionY);
+		if(directionDown)this.setBounds(bullet.getX() - xShift, bullet.getY() + yShift, dimensionX, dimensionY);
+		if(directionLeft)this.setBounds(bullet.getX() - yShift, bullet.getY() + xShift, dimensionX, dimensionY);
+		if(directionRight)this.setBounds(bullet.getX() + yShift, bullet.getY() + xShift, dimensionX, dimensionY);		
 	}
 
 	private void playSound() {
 		try {
 		Clip clip = AudioSystem.getClip();
-		inputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("shot_sound.wav"));
+		AudioInputStream inputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("shot_sound.wav"));
         clip.open(inputStream);
-        clip.start(); 
-        
+        clip.start();         
         }
         catch(Exception e){  
         	

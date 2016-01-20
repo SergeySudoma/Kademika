@@ -12,7 +12,7 @@ import Objects.Eagle;
 import Objects.Rock;
 import Objects.Water;
 
-public class BattleField implements Drawable {
+public class BattleField {
 
 	public static final int bfWidth = 576;
 	public static final int bfHeight = 576;

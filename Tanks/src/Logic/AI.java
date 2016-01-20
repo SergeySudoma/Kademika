@@ -9,11 +9,9 @@ import Objects.AbstractTank;
 public class AI {
 
 	private ActionField af;
-	private BattleField bf;
 
-	public AI(ActionField af, BattleField bf) {
+	public AI(ActionField af) {
 		this.af = af;
-		this.bf = bf;
 	}
 	
 	public AbstractTank locateNearestTargetTo(AbstractTank tank){

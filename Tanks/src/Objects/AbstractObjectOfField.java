@@ -17,7 +17,7 @@ public abstract class AbstractObjectOfField implements Drawable, Destroyable{
 	protected boolean isDestroyed = false;
 		
 	public AbstractObjectOfField(){
-		
+
 	}
 	
 	public AbstractObjectOfField(int x, int y){

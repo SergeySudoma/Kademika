@@ -8,8 +8,9 @@ import javax.imageio.ImageIO;
 import Logic.Destroyable;
 import Logic.Direction;
 import Logic.Drawable;
+import Logic.Movable;
 
-public class Bullet implements Drawable, Destroyable{
+public class Bullet implements Drawable, Destroyable, Movable{
 
 	private  int x;
 	private  int y;
@@ -27,6 +28,7 @@ public class Bullet implements Drawable, Destroyable{
 		this.y = y;
 		this.direction = direction;
 		initImage();
+		Drawable.drawableList.add(this);
 	}
 
 	public void updateX(int x) {

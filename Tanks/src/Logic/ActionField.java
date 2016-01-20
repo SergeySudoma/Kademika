@@ -4,10 +4,12 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.security.auth.DestroyFailedException;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import Objects.AbstractObjectOfField;
 import Objects.AbstractTank;
 import Objects.BT7;
 import Objects.Blank;
@@ -31,6 +33,8 @@ public class ActionField extends JPanel {
 	private AI ai;
 	private TankFrame tankFrame;
 	private String gameResult = null;
+	private HashMap<Object, Object> actionsMap = new HashMap<Object, Object>();
+	private HashMap<Direction, String> availableDirectionMap = new HashMap<Direction, String>();
 	
 	public static final int STEP = 1;
 	
@@ -41,13 +45,29 @@ public class ActionField extends JPanel {
 	}
 	
 	private void initContent(){
-		battleField = new BattleField();
-		getPredefiendCoordinates();
-		agressor = new Tiger(battleField, parseX(coordinates), parseY(coordinates), Direction.DEFAULT);
-		killer = new BT7(battleField, 64, 448, Direction.DEFAULT);
-		ai = new AI(this, battleField);
+		initActionsMap();
+		initBattlefield();
+		initAgressor();
+		initKiller();
+		initAI();		
 	}
 	
+	private void initAI() {
+		ai = new AI(this);		
+	}
+
+	private void initBattlefield(){
+		battleField = new BattleField();
+	}
+	
+	private void initAgressor(){
+		getPredefiendCoordinates();
+		agressor = new Tiger(battleField, parseX(coordinates), parseY(coordinates), Direction.DEFAULT);
+	}
+	
+	private void initKiller(){
+		killer = new BT7(battleField, 64, 448, Direction.DEFAULT);
+	}
 
 	void addT34() {
 		defender = new T34(battleField);		
@@ -60,19 +80,29 @@ public class ActionField extends JPanel {
 	
 	void runTheGame() throws Exception {
 				
-		while(isGameOver() == false){	
-			Actions defenderAction = ai.destroyTheTarget(defender, ai.locateNearestTargetTo(defender));
-			processAction(defenderAction, defender);
-
-			Actions killerAction = ai.destroyTheTarget(killer, battleField.getEagle());
-			processAction(killerAction, killer);
-			
-			Actions agressorAction = ai.destroyTheTarget(agressor, defender);
-			processAction(agressorAction, agressor);
+		while(isGameOver() == false){
+			processDefenderMission();
+			processAgressorMission();
+			processKillerMission();
 		}	
 			tankFrame.addGameOverMenu(gameResult);
 	}
 	
+	private void processDefenderMission() throws Exception{
+		Actions defenderAction = ai.destroyTheTarget(defender, ai.locateNearestTargetTo(defender));
+		processAction(defenderAction, defender);
+	}
+	
+	
+	private void processKillerMission() throws Exception{
+		Actions killerAction = ai.destroyTheTarget(killer, battleField.getEagle());
+		processAction(killerAction, killer);
+	}
+	
+	private void processAgressorMission() throws Exception{
+		Actions agressorAction = ai.destroyTheTarget(agressor, defender);
+		processAction(agressorAction, agressor);
+	}
 	
 	private boolean isGameOver(){
 		if(battleField.getEagle().getIsDestroyed() == true || defender.getIsDestroyed() == true){
@@ -116,27 +146,9 @@ public class ActionField extends JPanel {
 	
 	private void drawShotAnimation(Bullet bullet){
 
-		int xShift = 3;
-		int yShift = 50;
-		int dimensionX = 50;
-		int dimensionY = 50;
 		int delay = 300;
 		
 		ShotAnimation shotAnimation = new ShotAnimation(bullet);
-		
-		if(bullet.getDirection() == Direction.UP){
-			shotAnimation.setBounds(bullet.getX() - xShift, bullet.getY() - yShift, dimensionX, dimensionY);
-		}
-		else if(bullet.getDirection() == Direction.DOWN){
-			shotAnimation.setBounds(bullet.getX() - xShift, bullet.getY() + yShift, dimensionX, dimensionY);
-		}
-		else if(bullet.getDirection() == Direction.LEFT){
-			shotAnimation.setBounds(bullet.getX() - yShift, bullet.getY() + xShift, dimensionX, dimensionY);
-		}
-		else{
-			shotAnimation.setBounds(bullet.getX() + yShift, bullet.getY() + xShift, dimensionX, dimensionY);
-		}
-		
 		shotAnimation.setOpaque(false);
 		add(shotAnimation);
 		
@@ -151,109 +163,97 @@ public class ActionField extends JPanel {
         timer.start();
 	}
 	
+	private void initAvailableDirectionMap(Tank tank){
+		
+		int currentQuadrantX = tank.getX() / BattleField.PIXELS_IN_CELL;
+		int currentQuadrantY = tank.getY() / BattleField.PIXELS_IN_CELL;
+		int oneQuadrant = 1;
+		
+		String upperQuadrant = String.valueOf(currentQuadrantX) + "_" + String.valueOf(currentQuadrantY - oneQuadrant);
+		String lowerQuadrant = String.valueOf(currentQuadrantX) + "_" + String.valueOf(currentQuadrantY + oneQuadrant);
+		String lefterQuadrant = String.valueOf(currentQuadrantX - oneQuadrant) + "_" + String.valueOf(currentQuadrantY);
+		String righterQuadrant = String.valueOf(currentQuadrantX + oneQuadrant) + "_" + String.valueOf(currentQuadrantY);
+		
+		availableDirectionMap.put(Direction.UP, upperQuadrant);
+		availableDirectionMap.put(Direction.DOWN, lowerQuadrant);
+		availableDirectionMap.put(Direction.LEFT, lefterQuadrant);
+		availableDirectionMap.put(Direction.RIGHT, righterQuadrant);		
+	}
 	
 	boolean isAvailableForMove(Tank tank, Direction direction) {
-		if (direction == Direction.UP) {
-			if (battleField.checkQuadrant(tank.getX() / BattleField.PIXELS_IN_CELL,
-					(tank.getY() - BattleField.PIXELS_IN_CELL) / BattleField.PIXELS_IN_CELL) instanceof Blank) {
-				return true;
-			}
+		initAvailableDirectionMap(tank);
+		String coordinatesToCheck = availableDirectionMap.get(direction);
+		int coordinateXtoCheck = parseX(coordinatesToCheck);
+		int coordinateYtoCheck = parseY(coordinatesToCheck);
+		
+		if(battleField.checkQuadrant(coordinateXtoCheck, coordinateYtoCheck) instanceof Blank){
+			return true;
 		}
-
-		else if (direction == Direction.DOWN) {
-			if (battleField.checkQuadrant(tank.getX() / BattleField.PIXELS_IN_CELL,
-					(tank.getY() + BattleField.PIXELS_IN_CELL) / BattleField.PIXELS_IN_CELL) instanceof Blank) {
-				return true;
-			}
-		}
-
-		else if (direction == Direction.LEFT) {
-			if (battleField.checkQuadrant((tank.getX() - BattleField.PIXELS_IN_CELL)
-					/ BattleField.PIXELS_IN_CELL, tank.getY() / BattleField.PIXELS_IN_CELL) instanceof Blank) {
-				return true;
-			}
-		}
-
-		else {
-			if (battleField.checkQuadrant((tank.getX() + BattleField.PIXELS_IN_CELL)
-					/ BattleField.PIXELS_IN_CELL, tank.getY() / BattleField.PIXELS_IN_CELL) instanceof Blank) {
-				return true;
-			}
-		}
-		return false;
+		return false;		
+	}
+	
+	private void initActionsMap(){
+		actionsMap.put(Actions.MOVE_UP, Direction.UP);
+		actionsMap.put(Actions.MOVE_DOWN, Direction.DOWN);
+		actionsMap.put(Actions.MOVE_LEFT, Direction.LEFT);
+		actionsMap.put(Actions.MOVE_RIGHT, Direction.RIGHT);
+		actionsMap.put(Actions.FIRE, Actions.FIRE);
+		actionsMap.put(Direction.UP, Direction.UP);
+		actionsMap.put(Direction.DOWN, Direction.DOWN);
+		actionsMap.put(Direction.LEFT, Direction.LEFT);
+		actionsMap.put(Direction.RIGHT, Direction.RIGHT);
 	}
 
 	private void processAction(Actions action, Tank tank) throws Exception {
-		if (action == Actions.MOVE_UP) {
-			tank.setDirection(Direction.UP);
-			processMove(tank);
-		}
+		
+		  String actionType = action.getType();
+		  Boolean move = actionType.equals("move");
+		  Boolean turn = actionType.equals("turn") || move;
+		  Boolean fire = actionType.equals("fire");
 
-		else if (action == Actions.MOVE_DOWN) {
-			tank.setDirection(Direction.DOWN);
-			processMove(tank);
-		}
+		  if (turn) tank.setDirection((Direction)actionsMap.get(action));
+		  if (move) processMove(tank);
+		  if (fire) processFire(tank.fire());
 
-		else if (action == Actions.MOVE_LEFT) {
-			tank.setDirection(Direction.LEFT);
-			processMove(tank);
-		}
-
-		else if (action == Actions.MOVE_RIGHT) {
-			tank.setDirection(Direction.RIGHT);
-			processMove(tank);
-		}
-
-		else if (action == Actions.FIRE) {
-			processFire(tank.fire());
-		}
-
-		else if (action == Actions.TURN_UP) {
-			tank.setDirection(Direction.UP);
-		}
-
-		else if (action == Actions.TURN_DOWN) {
-			tank.setDirection(Direction.DOWN);
-		}
-
-		else if (action == Actions.TURN_LEFT) {
-			tank.setDirection(Direction.LEFT);
-		}
-
-		else if (action == Actions.TURN_RIGHT) {
-			tank.setDirection(Direction.RIGHT);
-		}
-		repaint();
+		  repaint();
+	}
+	
+	
+	private boolean isInField(AbstractObjectOfField object){		
+		boolean checkY = object.getY() > 0 && object.getY() < battleField.getBfHeight()
+				- BattleField.PIXELS_IN_CELL;
+		boolean checkX = object.getX() > 0 && object.getX() < battleField.getBfWidth()
+				- BattleField.PIXELS_IN_CELL;
+		boolean result = checkX && checkY;  		
+		return result;
 	}
 
+
 	private void processMove(Tank tank) throws InterruptedException {
-		if (isAvailableForMove(tank, tank.getDirection())) {
-			for (int i = 0; i < BattleField.PIXELS_IN_CELL; i++) {
+		if (isInField((AbstractObjectOfField) tank)){
+			if (isAvailableForMove(tank, tank.getDirection())) {
+				for (int i = 0; i < BattleField.PIXELS_IN_CELL; i++) {
 				Thread.sleep(tank.getSpeed());
 				this.repaint();
 
-				if (tank.getY() > 0 && tank.getDirection() == Direction.UP) {
+				if (tank.getDirection() == Direction.UP) {
 					tank.updateY(-STEP);
 				}
 
-				else if (tank.getY() < battleField.getBfHeight()
-						- BattleField.PIXELS_IN_CELL
-						&& tank.getDirection() == Direction.DOWN) {
+				else if (tank.getDirection() == Direction.DOWN) {
 					tank.updateY(+STEP);
 				}
 
-				else if (tank.getX() > 0
-						&& tank.getDirection() == Direction.LEFT) {
+				else if (tank.getDirection() == Direction.LEFT) {
 					tank.updateX(-STEP);
 				}
 
-				else if (tank.getX() < battleField.getBfWidth()
-						- BattleField.PIXELS_IN_CELL
-						&& tank.getDirection() == Direction.RIGHT) {
+				else if (tank.getDirection() == Direction.RIGHT) {
 					tank.updateX(+STEP);
 				}
 			}
 		}
+	}
 	}
 
 	private boolean processInterception() throws InterruptedException,
@@ -315,32 +315,26 @@ public class ActionField extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		battleField.draw(g);
-
-		if (defender != null) {
-			defender.draw(g);
-		}
-
-		if (agressor != null) {
-			agressor.draw(g);
-		}
-
-		if (bullet != null) {
-			bullet.draw(g);
-		}
-
-		if (killer != null) {
-			killer.draw(g);
-		}
+		for(Drawable obj : Drawable.drawableList){
+			if(obj != null){
+				obj.draw(g);
+			}
+		};
 	}
 
 	public void processFire(Bullet bullet) throws Exception {
 
 		this.bullet = bullet;
+		int compensation = 25;
+		int maximalX = battleField.getBfHeight() - compensation;
+		int maximalY = battleField.getBfHeight() - compensation;
+		int minimalX = 0;
+		int minimalY = 0;
 
 		drawShotAnimation(bullet);
 
-		while (bullet.getX() >= 0 && bullet.getX() <= 576 - 25
-				&& bullet.getY() >= 0 && bullet.getY() <= 576 - 25) {
+		while (bullet.getX() >= minimalX && bullet.getX() <= maximalX
+				&& bullet.getY() >= minimalY && bullet.getY() <= maximalY) {
 			
 			if (bullet.getDirection() == Direction.UP) {
 				bullet.updateY(-STEP);

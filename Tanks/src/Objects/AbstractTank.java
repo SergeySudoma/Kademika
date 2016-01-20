@@ -7,10 +7,11 @@ import Logic.BattleField;
 import Logic.Destroyable;
 import Logic.Direction;
 import Logic.Drawable;
+import Logic.Movable;
 import Logic.Tank;
 
 public abstract class AbstractTank extends AbstractObjectOfField implements
-		Drawable, Tank, Destroyable {
+		Tank, Destroyable, Drawable, Movable {
 
 	private int speed = 10;
 	public int actionsCount = 0;
@@ -26,6 +27,7 @@ public abstract class AbstractTank extends AbstractObjectOfField implements
 		this.direction = Direction.UP;
 		++tankIDcount;
 		tankList.add(this);
+		Drawable.drawableList.add(this);
 	}
 
 	public AbstractTank(int x, int y, Direction direction) {
@@ -34,6 +36,7 @@ public abstract class AbstractTank extends AbstractObjectOfField implements
 		this.direction = direction;
 		++tankID;
 		tankList.add(this);
+		Drawable.drawableList.add(this);
 	}
 	
 	public Integer getTankID(){

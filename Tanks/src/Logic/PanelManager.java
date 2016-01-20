@@ -2,8 +2,6 @@ package Logic;
 
 import java.io.IOException;
 
-import javax.swing.JPanel;
-
 public interface PanelManager {
 	
 	public void addMainMenuPanel();
