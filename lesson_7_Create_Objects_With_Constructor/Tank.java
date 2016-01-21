@@ -14,13 +14,14 @@ public class Tank {
 		this.health = health;
 	}
 	
-	public Tank(int ID, Color color){
+	public Tank(Integer ID, Color color){
 		this.ID = ID;
 		this.color = color;
 	}
 	
-	public Tank(int ID){
+	public Tank(Integer ID, Integer health ){
 		this.ID = ID;
+		this.health = health;
 	}
 	
 	public void fire(){

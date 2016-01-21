@@ -9,13 +9,13 @@ import java.util.Map;
 
 public class Demo {
 	
-	public static void main(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public static void main(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		
 		ObjectIniter oi = new ObjectIniter();
 		
 		List<Object> list = new ArrayList<Object>();
 		list.add(5);
-		list.add(Color.RED);
+		list.add(Color.BLACK);
 		
 		Tank tank = (Tank) oi.initClass(Tank.class, list);
 		System.out.println(tank);
