@@ -19,6 +19,7 @@ public class GameOverMenu extends JPanel{
 	private Image imageBackground;
 	private String gameResult;
 	private PanelManager panelManager;
+	private ActionField af;
 	
 	public GameOverMenu(String gameResult, PanelManager panelManager) throws IOException{
 		this.gameResult = gameResult;

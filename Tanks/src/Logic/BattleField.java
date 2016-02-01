@@ -152,7 +152,7 @@ public class BattleField {
 		return eagle.getX();
 	}
 
-	private void setEagleX(int eagleX) {
+	public void setEagleX(int eagleX) {
 		this.eagleX = eagleX;
 	}
 

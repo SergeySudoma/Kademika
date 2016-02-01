@@ -1,25 +1,30 @@
 package Objects;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.imageio.ImageIO;
 
 import Logic.BattleField;
 import Logic.Direction;
 
-public class Tiger extends AbstractTank{
+public class Tiger extends AbstractTank implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2741444099213608519L;
 	private int armor = 2;
 
-	public Tiger(BattleField bf, int x, int y,
+	public Tiger(int x, int y,
 			Direction direction) {
 		super(x, y, direction);
 		initImage();
 		
 	}
 	
-	public Tiger(BattleField bf) {
-		super(bf);
+	public Tiger() {
+		super();
 		initImage();		
 	}
 	

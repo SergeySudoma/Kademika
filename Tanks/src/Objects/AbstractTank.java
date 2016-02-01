@@ -17,26 +17,28 @@ public abstract class AbstractTank extends AbstractObjectOfField implements
 	public int actionsCount = 0;
 	private Direction direction;
 	private String mySimpleName = this.getClass().getSimpleName();
-	private static Integer tankIDcount = 0;
+	public static Integer tankIDcount = 0;
 	private Integer tankID = tankIDcount;
 	private static ArrayList<AbstractTank> tankList = new ArrayList<AbstractTank>();
 
-	public AbstractTank(BattleField bf) {
+	public AbstractTank() {
 		this.x = 256;
 		this.y = 128;
 		this.direction = Direction.UP;
 		++tankIDcount;
 		tankList.add(this);
 		Drawable.drawableList.add(this);
+		setNotDestroyed();
 	}
 
 	public AbstractTank(int x, int y, Direction direction) {
 		this.x = x;
 		this.y = y;
 		this.direction = direction;
-		++tankID;
+		++tankIDcount;
 		tankList.add(this);
 		Drawable.drawableList.add(this);
+		setNotDestroyed();
 	}
 	
 	public Integer getTankID(){

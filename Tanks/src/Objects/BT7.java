@@ -1,18 +1,22 @@
 package Objects;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.imageio.ImageIO;
 
-import Logic.Actions;
 import Logic.BattleField;
 import Logic.Direction;
 
-public class BT7 extends AbstractTank{
+public class BT7 extends AbstractTank implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 456300247062473337L;
 	private int armor = 2;
 
-	public BT7(BattleField bf, int x, int y,
+	public BT7(int x, int y,
 			Direction direction) {
 		super(x, y, direction);
 		initImage();

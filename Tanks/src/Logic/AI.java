@@ -1,8 +1,10 @@
 package Logic;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+
 import Objects.AbstractObjectOfField;
 import Objects.AbstractTank;
 
@@ -15,7 +17,7 @@ public class AI {
 	}
 	
 	public AbstractTank locateNearestTargetTo(AbstractTank tank){
-
+		
 		HashMap<Integer, AbstractTank> map = new HashMap<Integer, AbstractTank>();
 		
 		for(AbstractTank possibleNearestTank : AbstractTank.getTankList()){
@@ -48,76 +50,76 @@ public class AI {
 		return yDifference;
 	}
 
-	public Actions destroyTheTarget(AbstractTank tank, AbstractObjectOfField obj) {
+	public ActionsPair destroyTheTarget(AbstractTank tank, AbstractObjectOfField obj) {
 		
 		int xDifference = getXdifference(tank, obj);
-		int yDifference = getYdifference(tank, obj);		
-
-		Actions act = Actions.NONE;
+		int yDifference = getYdifference(tank, obj);	
+		
+		ActionsPair emptyActionsPair = new ActionsPair(Actions.NONE, Direction.DEFAULT);
 		
 		if(tank.getIsDestroyed() == true){
-			return act;
+			return emptyActionsPair;
 		}
 
 		if (obj.getIsDestroyed() == false) {
 			
-			if (xDifference > 0 && yDifference == 0){
-				tank.setDirection(Direction.RIGHT);
-				return Actions.FIRE;
+			if (xDifference > 0 && yDifference == 0){	
+				return new ActionsPair(Actions.FIRE, Direction.RIGHT);
 			}
+			
 			if (xDifference < 0 && yDifference == 0){
-				tank.setDirection(Direction.LEFT);
-				return Actions.FIRE;
+				return new ActionsPair(Actions.FIRE, Direction.LEFT);
 			}
+			
 			if (yDifference < 0 && xDifference == 0){
-				tank.setDirection(Direction.UP);
-				return Actions.FIRE;
+				return new ActionsPair(Actions.FIRE, Direction.UP);
 			}
 			
 			if (yDifference > 0 && xDifference == 0){
-				tank.setDirection(Direction.DOWN);
-				return Actions.FIRE;
+				return new ActionsPair(Actions.FIRE, Direction.DOWN);
 			}
 
 			if (xDifference > 0) {
 				if (af.isAvailableForMove(tank, Direction.RIGHT)) {
-					return Actions.MOVE_RIGHT;
+					return new ActionsPair(Actions.MOVE, Direction.RIGHT);
 				} else {
-					return Actions.FIRE;
+					return new ActionsPair(Actions.FIRE, Direction.RIGHT);
 				}
-
 			}
 
 			if (xDifference < 0) {
 				if (af.isAvailableForMove(tank, Direction.LEFT)) {
-					return Actions.MOVE_LEFT;
+					return new ActionsPair(Actions.MOVE, Direction.LEFT);
 				} else {
-					return Actions.FIRE;
+					return new ActionsPair(Actions.FIRE, Direction.LEFT);
 				}
 			}
 
 			if (yDifference < 0) {
 				if (af.isAvailableForMove(tank, Direction.UP)) {
-					return Actions.MOVE_UP;
+					return new ActionsPair(Actions.MOVE, Direction.UP);
 				} else {
-					return Actions.FIRE;
+					return new ActionsPair(Actions.FIRE, Direction.UP);
 				}
 			}
 
 			if (yDifference > 0) {
 				if (af.isAvailableForMove(tank, Direction.DOWN)) {
-					return Actions.MOVE_DOWN;
+					return new ActionsPair(Actions.MOVE, Direction.DOWN);
 				} else {
-					return Actions.FIRE;
+					return new ActionsPair(Actions.FIRE, Direction.DOWN);
 				}
 			}
 		}
-		return act;
+		return emptyActionsPair;
 	}
 
-	private Actions obtainRndAction() {
+	private ActionsPair obtainRndAction() {
 		Random rnd = new Random();
-		Actions[] temp = Actions.values();
-		return temp[rnd.nextInt(5)];
+		Actions[] tempActions = Actions.values();
+		Direction[] tempDirections = Direction.values();
+		Actions act = tempActions[rnd.nextInt(2)];
+		Direction dir = tempDirections[rnd.nextInt(4)];
+		return new ActionsPair(act, dir);
 	}
 }

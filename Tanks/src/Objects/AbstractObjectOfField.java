@@ -1,6 +1,8 @@
 package Objects;
 
 import java.awt.Image;
+import java.io.Serializable;
+
 import javax.security.auth.Destroyable;
 
 import Logic.Drawable;
@@ -9,11 +11,11 @@ public abstract class AbstractObjectOfField implements Drawable, Destroyable{
 
 	protected int x;
 	protected int y;
-	protected Image image;
-	protected Image image_up;
-	protected Image image_down;
-	protected Image image_left;
-	protected Image image_right;
+	protected transient Image image;
+	protected transient Image image_up;
+	protected transient Image image_down;
+	protected transient Image image_left;
+	protected transient Image image_right;
 	protected boolean isDestroyed = false;
 		
 	public AbstractObjectOfField(){
@@ -47,6 +49,10 @@ public abstract class AbstractObjectOfField implements Drawable, Destroyable{
 
 	public void setDestroyed() {
 		isDestroyed = true;
+	}
+	
+	public void setNotDestroyed(){
+		isDestroyed = false;
 	}
 	
 	public void destroy(){

@@ -1,20 +1,27 @@
 package Objects;
 
 import java.io.IOException;
+import java.io.Serializable;
+
 import javax.imageio.ImageIO;
-import Logic.Actions;
+
 import Logic.BattleField;
 import Logic.Direction;
 
-public class T34 extends AbstractTank {
+public class T34 extends AbstractTank{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5250358646148151621L;
+
 	public T34(BattleField bf,int x, int y, Direction direction) {
 		super(x, y, direction);
 		initImages();
 	}
 	
-	public T34(BattleField bf) {
-		super(bf);
+	public T34() {
+		super();
 		initImages();		
 	}
 	
@@ -29,18 +36,4 @@ public class T34 extends AbstractTank {
 			e.printStackTrace();
 		}		
 	}
-	
-	private Actions[] actions = {
-			Actions.TURN_UP,
-			Actions.FIRE,
-			Actions.MOVE_UP,
-		Actions.FIRE,
-	};
-	
-	public Actions setUp(){
-		if(actionsCount >= actions.length){
-			actionsCount = 0;
-		}
-		return actions[actionsCount++];
-	}	
 }

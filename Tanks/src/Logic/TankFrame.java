@@ -2,6 +2,7 @@ package Logic;
 
 import java.awt.Dimension;
 import java.io.IOException;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -10,6 +11,7 @@ import javax.swing.WindowConstants;
 public class TankFrame extends JFrame implements PanelManager{
 	
 	private JPanel currentJPanel;
+	private ActionField af;
 	
 	public TankFrame() throws Exception{
 		super("TANKS BATTLE");
@@ -40,10 +42,15 @@ public class TankFrame extends JFrame implements PanelManager{
 	
 	@Override
 	public void addActionFieldAndRunGame(String selectedTank) throws Exception{
-		ActionField af = new ActionField(this);
+		
+		if(af == null){		
+			af = new ActionField(this);
+		};
+		
 		this.remove(currentJPanel);
 		currentJPanel = af;
 		this.add(af);
+		af.setIsReplay(false);
 
 		if(selectedTank.equals("t34")){
 			af.addT34();
@@ -70,11 +77,43 @@ public class TankFrame extends JFrame implements PanelManager{
 
 	@Override
 	public void addGameOverMenu(String gameResult) throws IOException {
+		af = null;
 		GameOverMenu gameOverMenu = new GameOverMenu(gameResult, this);
 		this.remove(currentJPanel);
 		currentJPanel = gameOverMenu;
 		this.add(gameOverMenu);		
 		this.revalidate();
+		
+	}
+
+	@Override
+	public void addActionFieldAndPlayLastGamePlay() throws Exception {
+		
+		if(af == null){		
+			af = new ActionField(this);
+		};
+		
+		this.remove(currentJPanel);
+		currentJPanel = af;
+		this.add(af);
+		af.setIsReplay(true);
+		af.addT34();
+
+		
+		Thread t2 = new Thread(new Runnable() {			
+			@Override
+			public void run() {
+				try {
+					af.replayGameplay();;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}			
+			}
+		});
+		
+		this.revalidate();		
+		t2.start();
 		
 	}
 }
