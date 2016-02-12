@@ -6,9 +6,10 @@ public class Demo {
 		
 		Controller controller = new Controller();
 		
-		controller.shuttleGoHome();
 		controller.initGates();
-		
+		controller.shuttleGoHome();
+
+			
 	}
 
 }

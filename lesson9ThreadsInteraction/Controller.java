@@ -1,7 +1,5 @@
 package lesson9ThreadsInteraction;
 
-import Test.printInts;
-
 public class Controller {
 
 	private boolean shipArrived = false;
@@ -17,6 +15,14 @@ public class Controller {
 		panel = new Panel();
 		panel.add(view);
 		panel.setVisible(true);
+	}
+
+	private void spawnNewShuttle() throws InterruptedException {
+		shuttle = null;
+		shuttle = new Shuttle();
+		view.setShuttle(shuttle);
+		view.repaint();
+		shuttleGoHome();
 	}
 
 	public void shuttleGoHome() throws InterruptedException {
@@ -38,13 +44,20 @@ public class Controller {
 								shuttle.wait();
 							}
 						}
-						
+
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
 				synchronized (gates) {
 					gates.notify();
+				}
+				System.out.println("at home");
+				try {
+					spawnNewShuttle();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		});
@@ -65,8 +78,9 @@ public class Controller {
 			view.repaint();
 		}
 	}
-	
+
 	private void closeGates() {
+		shipArrived = false;
 		for (int i = 0; i < 55; i++) {
 			view.getGates().getGamePart1()
 					.setY(view.getGates().getGamePart1().getY() + 1);
@@ -86,27 +100,28 @@ public class Controller {
 
 			@Override
 			public void run() {
-
-				synchronized (gates) {
-					while (shipArrived == false) {
-						try {
-							gates.wait();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-					openGates();
-					synchronized (shuttle) {
-						shuttle.notify();
-					}
+				while (true) {
 					synchronized (gates) {
-						try {
-							gates.wait();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
+						while (shipArrived == false) {
+							try {
+								gates.wait();
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
 						}
+						openGates();
+						synchronized (shuttle) {
+							shuttle.notify();
+						}
+						synchronized (gates) {
+							try {
+								gates.wait();
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+						closeGates();
 					}
-					closeGates();
 				}
 			}
 		});
