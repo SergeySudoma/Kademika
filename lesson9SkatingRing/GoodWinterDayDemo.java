@@ -27,7 +27,7 @@ public class GoodWinterDayDemo {
 							synchronized (this) {
 								this.wait();
 							}
-						}
+					}
 						
 					} catch (InterruptedException e) {
 						e.printStackTrace();

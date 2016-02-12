@@ -11,7 +11,7 @@ public class SchoolScatingRing implements SkatingRing{
 	}
 	
 	private void initSkatesStock(){
-		for(int i = 0; i < 5; i++){
+		for(int i = 0; i < 2; i++){
 			skatesList.addFirst(new Skates());
 		}
 	}
@@ -19,11 +19,14 @@ public class SchoolScatingRing implements SkatingRing{
 	@Override
 	public Skates getSkates(Skater skater) throws InterruptedException {
 		System.out.println(skater.getName() + " get skates");
-		Skates skates = skatesList.get(0); 
-		skatesList.removeFirst();
-		if(skatesList.size() == 0){
-			return null;			
+		Skates skates = null;
+		try{
+			skates = skatesList.getFirst();
+			skatesList.removeFirst();
 		}
+		catch(Exception e){
+			return null;
+		}			
 		return skates;
 				
 	}
