@@ -1,5 +1,7 @@
 About the "Car Shop" Java application by Sergey Sudoma.
 
+Link to youtube overview - https://youtu.be/YLs-pfmwFSg
+
 GUI application is developed to be used as a terminal point-of-sale application in shop of any kind.
 Main purpose is automation of sales process and possibility of generation of Stock and Sales reports .
 
