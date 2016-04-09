@@ -9,7 +9,7 @@ Application is designed to work in two modes:
 - CRUD mode with the DERBY DB
 - ORM mode powered by hibernate with the MySQL DB
 
-Main points of app:
+Main points of app:  
 1. MVC model  
 2. mode selection is performed via editing "launcher.properties" configuration file.     
    If properties file is unavailable or corrupted app launches the CRUD with the Derby DB mode.  
