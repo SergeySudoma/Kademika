@@ -19,7 +19,3 @@ Main points of app:
 
 Used technologies: J2SE, ORM via Hibernate, POJO, Annotations, HQL, JDBC, MVC, SWING 
 Used RDBMS: Derby, MySQL
-
-Здравствуйте. Мне недавно продавец в вашем магазине в Макросе про спортивные часы со встроенным электронным компасом. Я не могу вспомнить как они называются. Можете напомнить?
-
-https://youtu.be/h9gAdEwKJdM
