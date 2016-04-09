@@ -1,6 +1,6 @@
 About the "Tanks Battle" Java application by Sergey Sudoma.
 
-Link to youtube overview - 
+Link to youtube overview -  https://youtu.be/jk4dXfYrKQo
 
 GUI game application where green and red teams of tanks green and red.
 The target of green team is to destroy red team members, and the target of red team is
