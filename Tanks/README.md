@@ -12,7 +12,6 @@ Main points:
 2. Event based game model;     
 3. Multithreading enviroment management;  
 4. Swing powered GUI;  
-5. Gameplay is being saved to file;    
-6. Possibility to watch last gameplay from file;   
+5. Serialization provides possibiliy to watch last gameplay from file;   
 
 Used technologies: J2SE, SWING, Multithreading, Serialization.
